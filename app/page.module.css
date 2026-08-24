@@ -870,6 +870,11 @@
   text-transform: uppercase;
 }
 
+.status a {
+  color: inherit;
+  text-decoration: none;
+}
+
 
 .statusDot {
   width: 5px;

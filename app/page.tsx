@@ -450,7 +450,15 @@ function PortfolioContent() {
             <div className={styles.status}>
               <span className={styles.statusDot} />
 
-              Interactive research portfolio
+              <a
+                href="https://orcid.org/0009-0006-1800-9996"
+                target="_blank"
+                rel="noopener noreferrer me"
+                aria-label="Elizabeth del Ángel Franco ORCID profile"
+                data-hand-target
+              >
+                ORCID 0009-0006-1800-9996
+              </a>
             </div>
 
           </div>
