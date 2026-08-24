@@ -1,12 +1,14 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f0ebe1;
+  --foreground: #3b495b;
+  --interaction-cold: #d2dcd7;
+  --interaction-warm: #b69786;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #252a30;
+    --foreground: #f0ebe1;
   }
 }
 
@@ -42,8 +44,488 @@ a {
   text-decoration: none;
 }
 
+.input-mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 7px 6px 12px;
+  border: 1px solid var(--home-line, rgba(210, 220, 215, .2));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--home-surface, #f0ebe1) 88%, transparent);
+  box-shadow: 0 10px 30px rgba(34, 42, 50, .08);
+  backdrop-filter: blur(16px);
+}
+
+.input-mode-selector--home,
+.input-mode-selector--navbar { position: relative; }
+
+.input-mode-selector--navbar {
+  padding-block: 4px;
+  box-shadow: none;
+}
+
+.input-mode-selector--navbar .input-mode-toggle button {
+  min-height: 28px;
+  padding-inline: 9px;
+}
+
+.input-mode-label {
+  color: var(--home-muted, #66707a);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.input-mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+  border: 1px solid var(--home-line, rgba(210, 220, 215, .2));
+  border-radius: 999px;
+  background: var(--home-soft-line, rgba(59, 73, 91, .06));
+}
+
+.input-mode-toggle button {
+  min-height: 32px;
+  padding: 0 12px;
+  gap: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--home-muted, #66707a);
+  font: 600 11px/1 Arial, sans-serif;
+  cursor: pointer;
+  transition: color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.input-mode-toggle button[aria-pressed="true"] {
+  background: var(--home-surface, #f0ebe1);
+  color: var(--home-text, #3b495b);
+  box-shadow: 0 2px 8px rgba(34, 42, 50, .12);
+}
+
+@media (max-width: 800px) {
+  .input-mode-selector--navbar .input-mode-label { display: none; }
+}
+
+@media (max-width: 420px) {
+  .input-mode-label { display: none; }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+/* =========================================================
+   INTERACCIÓN POR MANO - MENÚ
+   ========================================================= */
+
+[data-hand-target] {
+  position: relative;
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  isolation: isolate;
+
+  transition:
+    color 280ms ease,
+    text-shadow 280ms ease,
+    transform 320ms
+      cubic-bezier( 0.22, 1, 0.36, 1 );
+}
+
+
+/* =========================================================
+   SEMIÓVALO / U DORADA
+   ========================================================= */
+
+[data-hand-target]::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  /*
+   * Un poco más ancho que el texto.
+   */
+  width: 135%;
+  height: 145%;
+
+  transform: translate(-50%, -44%) scaleX(0.35) scaleY(0.78);
+
+  /*
+   * Solo dibujamos:
+   *
+   * izquierda
+   * derecha
+   * abajo
+   *
+   * La parte superior queda abierta.
+   */
+  border-left:1px solid rgba( 211, 173, 104, 0);
+  border-right: 1px solid rgba( 211, 173, 104, 0 );
+  border-bottom: 1px solid rgba( 211, 173, 104, 0 );
+  border-radius:
+    0
+    0
+    999px
+    999px;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  /*
+   * Un glow muy discreto.
+   */
+  filter:
+    drop-shadow(
+      0 0 3px
+      rgba( 211, 173, 104, 0.25 ) )
+    drop-shadow(
+      0 0 8px
+      rgba( 211, 173, 104, 0.12 ) );
+
+  transition:
+    opacity 220ms ease,
+    transform 420ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    border-color 300ms ease;
+}
+
+
+/* =========================================================
+   ELEMENTO ENFOCADO POR LA MANO
+   ========================================================= */
+
+[data-hand-target]:is(
+  .hand-hover-active,
+  :hover,
+  :focus-visible
+) {
+  color: var(--interaction-warm);
+
+  text-shadow:
+    0 0 6px
+      rgba( 239, 209, 148, 0.32 );
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   APARECE LA U
+   ========================================================= */
+
+[data-hand-target]:is(
+  .hand-hover-active,
+  :hover,
+  :focus-visible
+)::before {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -44%)
+    scaleX(1)
+    scaleY(1);
+
+  border-left-color: color-mix(in srgb, var(--interaction-cold) 72%, transparent);
+  border-right-color: color-mix(in srgb, var(--interaction-cold) 72%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--interaction-warm) 78%, transparent);
+}
+
+
+[data-hand-target]:is(
+  .hand-hover-active,
+  :hover,
+  :focus-visible
+)::before {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+}
+/* =========================================================
+   PINCH - CONFIRMACIÓN VISUAL
+   ========================================================= */
+
+/*
+ * El halo solamente aparece
+ * cuando hacemos pinch.
+ */
+
+[data-hand-target]::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 155%;
+  height: 210%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.55);
+
+  border-radius:
+    999px;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba( 255, 229, 169, 0.28 )
+      0%,
+
+      rgba( 211, 173, 104, 0.17 )
+      32%,
+
+      rgba( 211, 173, 104, 0.07 )
+      52%,
+
+      transparent
+      75%
+    );
+
+  opacity:
+    0;
+
+  filter:
+    blur(
+      6px
+    );
+
+  pointer-events:
+    none;
+
+  z-index:
+    -1;
+}
+
+
+/* =========================================================
+   PINCH ACTIVO
+   ========================================================= */
+
+[data-hand-target].hand-pinch-active::after,
+[data-hand-target]:active::after {
+  animation:
+    handPinchHalo
+    420ms
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    forwards;
+}
+
+
+/*
+ * La U también recibe
+ * un destello cuando confirmamos.
+ */
+
+[data-hand-target].hand-pinch-active::before,
+[data-hand-target]:active::before {
+  border-left-color:
+    rgba( 255, 225, 164, 0.95 );
+
+  border-right-color:
+    rgba( 255, 225, 164, 0.95 );
+
+  border-bottom-color:
+    rgba( 255, 235, 190, 1 );
+
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba( 239, 209, 148, 0.75 )
+    )
+    drop-shadow(
+      0 0 12px
+      rgba( 211, 173, 104, 0.42 )
+    );
+}
+
+
+/*
+ * El texto también aumenta
+ * ligeramente de brillo.
+ */
+
+[data-hand-target].hand-pinch-active,
+[data-hand-target]:active {
+  color:
+    #fff1cf;
+
+  text-shadow:
+    0 0 5px
+      rgba( 255, 235, 190, 0.85 ),
+    0 0 14px
+      rgba( 211, 173, 104, 0.52 ),
+    0 0 24px
+      rgba( 211, 173, 104, 0.22 );
+}
+
+
+/* =========================================================
+   ANIMACIÓN DEL HALO
+   ========================================================= */
+
+@keyframes handPinchHalo {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale( 0.55 );
+  }
+
+  28% {
+    opacity: 1;
+
+    transform: translate(
+        -50%,
+        -50%
+      )
+      scale( 0.92 );
+  }
+
+  62% {
+    opacity: 0.72;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale( 1.08 );
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale( 1.25 );
+  }
+}
+/* =========================================================
+   HAND TARGET - BOTÓN RECTANGULAR
+   ========================================================= */
+
+[data-hand-target][data-hand-style="box"]::before {
+  width: 112%;
+  height: 145%;
+
+  border:
+    1px solid
+    rgba( 211, 173, 104, 0 );
+
+  border-radius:
+    7px;
+
+  background:
+    rgba( 211, 173, 104, 0.02 );
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.84);
+
+  opacity: 0;
+
+  box-shadow:
+    0 0 0
+    rgba( 211, 173, 104, 0 );
+}
+
+
+[data-hand-target][data-hand-style="box"]:is(
+  .hand-hover-active,
+  :hover,
+  :focus-visible
+)::before {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+
+  border-color:
+    rgba( 239, 209, 148, 0.72 );
+
+  box-shadow:
+    0 0 8px
+      rgba( 211, 173, 104, 0.18 ),
+    inset 0 0 8px
+      rgba( 211, 173, 104, 0.035);
+}
+/* =========================================================
+   HAND TARGET - ICONOS SOCIALES
+   ========================================================= */
+
+[data-hand-target][data-hand-style="icon"]::before {
+  width: 42px;
+  height: 42px;
+
+  border:
+    1px solid
+    rgba( 211, 173, 104, 0 );
+
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.6);
+
+  opacity: 0;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(211, 173, 104, 0.08 ),
+      transparent
+      70%
+    );
+}
+
+
+[data-hand-target][data-hand-style="icon"]:is(
+  .hand-hover-active,
+  :hover,
+  :focus-visible
+)::before {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+
+  border-color:
+    rgba( 239, 209, 148, 0.52 );
+
+  box-shadow:
+    0 0 10px
+      rgba( 211, 173, 104, 0.18 );
 }

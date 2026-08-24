@@ -1,0 +1,471 @@
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  width: 20px;
+  height: 20px;
+
+  margin-left: -10px;
+  margin-top: -10px;
+
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 200ms ease, filter 200ms ease;
+}
+
+.cursor[data-gesture="idle"],
+.cursor[data-gesture="pause"] { opacity: 0.22; }
+.cursor[data-gesture="navigate"] { opacity: 0.62; filter: saturate(0.8); }
+.cursor[data-gesture="pinch"] { filter: brightness(1.3); }
+.cursor[data-gesture="pinch"] .outerHalo { transform: translate(-50%, -50%) scale(0.72); }
+
+
+/* =========================================================
+   CONEXIONES DINÁMICAS
+   ========================================================= */
+
+.connection {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  height: 1px;
+  width: 0;
+
+  opacity: 0;
+
+  transform-origin: 0 50%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        235,
+        205,
+        146,
+        0.95
+      ),
+      rgba(
+        235,
+        205,
+        146,
+        0.35
+      ),
+      rgba(
+        48,
+        102,
+        132,
+        0.12
+      ),
+      transparent
+    );
+
+  box-shadow:
+    0 0 4px
+      rgba(
+        211,
+        173,
+        104,
+        0.32
+      );
+
+  transition:
+    opacity 120ms linear;
+}
+
+
+.connectionNode {
+  position: absolute;
+
+  right: -3px;
+  top: 50%;
+
+  width: 5px;
+  height: 5px;
+
+  transform:
+    translateY(-50%);
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      239,
+      209,
+      148,
+      0.95
+    );
+
+  box-shadow:
+    0 0 7px
+      rgba(
+        239,
+        209,
+        148,
+        0.95
+      ),
+    0 0 14px
+      rgba(
+        201,
+        169,
+        106,
+        0.48
+      );
+
+  animation:
+    nodePulse
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   HALO
+   ========================================================= */
+
+.outerHalo {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 38px;
+  height: 38px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(
+      211,
+      173,
+      104,
+      0.16
+    );
+
+  box-shadow:
+    0 0 18px
+      rgba(
+        211,
+        173,
+        104,
+        0.12
+      ),
+    inset 0 0 14px
+      rgba(
+        211,
+        173,
+        104,
+        0.05
+      );
+
+  animation:
+    haloPulse
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   SOMA
+   ========================================================= */
+
+.soma {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 13px;
+  height: 13px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(
+        255,
+        244,
+        210,
+        0.95
+      ),
+      rgba(
+        229,
+        194,
+        125,
+        0.75
+      )
+      26%,
+      rgba(
+        183,
+        139,
+        71,
+        0.32
+      )
+      58%,
+      rgba(
+        30,
+        65,
+        84,
+        0.08
+      )
+      100%
+    );
+
+  box-shadow:
+    0 0 8px
+      rgba(
+        239,
+        209,
+        148,
+        0.85
+      ),
+    0 0 18px
+      rgba(
+        201,
+        169,
+        106,
+        0.38
+      ),
+    0 0 30px
+      rgba(
+        48,
+        102,
+        132,
+        0.14
+      );
+
+  animation:
+    somaBreathing
+    1.9s
+    ease-in-out
+    infinite;
+
+  z-index: 3;
+}
+
+
+.somaCore {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 4px;
+  height: 4px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      247,
+      226,
+      0.95
+    );
+
+  box-shadow:
+    0 0 7px
+      rgba(
+        255,
+        225,
+        164,
+        0.95
+      );
+}
+
+
+/* =========================================================
+   MICROPARTÍCULAS
+   ========================================================= */
+
+.microParticle {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 2px;
+  height: 2px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      239,
+      209,
+      148,
+      0.8
+    );
+
+  box-shadow:
+    0 0 6px
+      rgba(
+        239,
+        209,
+        148,
+        0.65
+      );
+}
+
+.microOne {
+  animation:
+    orbitOne
+    3.4s
+    linear
+    infinite;
+}
+
+.microTwo {
+  animation:
+    orbitTwo
+    4.2s
+    linear
+    infinite;
+}
+
+.microThree {
+  animation:
+    orbitThree
+    5s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes somaBreathing {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.13);
+  }
+}
+
+@keyframes haloPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform:
+      translate(-50%, -50%)
+      scale(0.92);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+  }
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform:
+      translateY(-50%)
+      scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform:
+      translateY(-50%)
+      scale(1.35);
+  }
+}
+
+@keyframes orbitOne {
+  from {
+    transform:
+      rotate(0deg)
+      translateX(25px)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg)
+      translateX(25px)
+      rotate(-360deg);
+  }
+}
+
+@keyframes orbitTwo {
+  from {
+    transform:
+      rotate(120deg)
+      translateX(32px)
+      rotate(-120deg);
+  }
+
+  to {
+    transform:
+      rotate(480deg)
+      translateX(32px)
+      rotate(-480deg);
+  }
+}
+
+@keyframes orbitThree {
+  from {
+    transform:
+      rotate(240deg)
+      translateX(21px)
+      rotate(-240deg);
+  }
+
+  to {
+    transform:
+      rotate(600deg)
+      translateX(21px)
+      rotate(-600deg);
+  }
+}
+
+.connection {
+  background: linear-gradient(90deg, var(--sky-glass, #d2dcd7), rgba(210, 220, 215, 0.32), transparent);
+  box-shadow: 0 0 4px rgba(182, 151, 134, 0.22);
+}
+
+.connectionNode,
+.microParticle {
+  background: var(--butcher-paper, #b69786);
+  box-shadow: 0 0 7px rgba(182, 151, 134, 0.5);
+}
+
+.outerHalo {
+  border-color: rgba(210, 220, 215, 0.48);
+  box-shadow: 0 0 16px rgba(210, 220, 215, 0.18), inset 0 0 12px rgba(59, 73, 91, 0.08);
+}
+
+.soma {
+  background: radial-gradient(circle at 35% 30%, var(--shell-white, #f0ebe1), var(--sky-glass, #d2dcd7) 36%, rgba(182, 151, 134, 0.32) 68%, transparent);
+  box-shadow: 0 0 8px rgba(210, 220, 215, 0.65), 0 0 18px rgba(182, 151, 134, 0.24);
+}
