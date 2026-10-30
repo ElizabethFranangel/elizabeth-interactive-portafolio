@@ -28,8 +28,9 @@
   --complex-grey: #818362;
   --graphic-charcoal: #1e202b;
   --sky-glass: #818362;
+  --mist-grey: #e5e6e2;
   
-  --home-background: var(--shell-white);
+  --home-background: var(--mist-grey);
   --home-surface: rgba(241, 241, 232, 0.78);
   --home-text: var(--very-navy);
   --home-muted: var(--graphic-charcoal);
@@ -3582,7 +3583,7 @@
    ========================================================= */
 
 .page {
-  --background: var(--shell-white);
+  --background: var(--mist-grey);
   --surface: rgba(241, 241, 232, 0.9);
   --surface-soft: rgba(129, 131, 98, 0.25);
   --text-primary: var(--very-navy);
