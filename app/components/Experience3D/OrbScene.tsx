@@ -255,7 +255,7 @@ function ParticleUniverse({ theme }: { theme: Theme }) {
       : 0.28;
 
   const particleColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#3B495B" : "#D2DCD7"),
+    () => new THREE.Color(theme === "light" ? "#103440" : "#9DADA2"),
     [theme]
   );
 
@@ -986,7 +986,7 @@ function ParticleUniverse({ theme }: { theme: Theme }) {
 
       <pointsMaterial
         ref={materialRef}
-        color="#3B495B"
+        color="#103440"
         size={0.018}
         sizeAttenuation
         transparent
@@ -1025,12 +1025,12 @@ export function PhotoPortal({ theme }: { theme: Theme }) {
       : 0.28;
 
   const haloColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#B69786" : "#D2DCD7"),
+    () => new THREE.Color(theme === "light" ? "#5F2F46" : "#9DADA2"),
     [theme]
   );
 
   const photoBackgroundColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#D2DCD7" : "#3B495B"),
+    () => new THREE.Color(theme === "light" ? "#9DADA2" : "#103440"),
     [theme]
   );
 
@@ -1319,7 +1319,7 @@ export function PhotoPortal({ theme }: { theme: Theme }) {
           ref={
             backgroundMaterialRef
           }
-          color="#D2DCD7"
+          color="#9DADA2"
           transparent
           opacity={0.03}
           depthWrite={false}
@@ -1382,7 +1382,7 @@ export function PhotoPortal({ theme }: { theme: Theme }) {
           ref={
             haloMaterialRef
           }
-          color="#B69786"
+          color="#5F2F46"
           transparent
           opacity={0.34}
           depthWrite={false}
@@ -1428,7 +1428,7 @@ function ForegroundWatermarkParticles({ theme }: { theme: Theme }) {
   } = useInteraction();
 
   const particleColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#857B74" : "#F0EBE1"),
+    () => new THREE.Color(theme === "light" ? "#2F505E" : "#F6F3EE"),
     [theme]
   );
 
@@ -1801,7 +1801,7 @@ function ForegroundWatermarkParticles({ theme }: { theme: Theme }) {
 
       <pointsMaterial
         ref={ materialRef }
-        color="#857B74"
+        color="#2F505E"
         size={0.024}
         sizeAttenuation
         transparent
