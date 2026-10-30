@@ -4321,3 +4321,115 @@
   .teachingChapter .teachingApproach > div,
   .teachingChapter .teachingAreas > div { grid-template-columns: 1fr; }
 }
+
+/* Editorial hero inspired by the supplied reference. */
+.page[data-theme] .heroContent {
+  max-width: 760px;
+}
+
+.page[data-theme] .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.25em;
+}
+
+.page[data-theme] .eyebrow::before {
+  content: "";
+  width: 44px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.page[data-theme] .hero h1 {
+  margin: 0;
+  font-size: clamp(4rem, 6.2vw, 7rem);
+  font-weight: 500;
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+}
+
+.page[data-theme] .lastName {
+  display: block;
+  margin-top: 10px;
+  color: var(--accent) !important;
+  font-size: 0.94em;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.94;
+}
+
+.page[data-theme] .specialties {
+  margin-top: 30px;
+  color: var(--accent-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.17em;
+}
+
+.page[data-theme="dark"] .specialties {
+  color: var(--text-secondary);
+}
+
+.page[data-theme] .description {
+  max-width: 680px;
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.15vw, 1.13rem);
+  line-height: 1.75;
+}
+
+.page[data-theme] .actions {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.page[data-theme] .primaryButton,
+.page[data-theme] .secondaryButton {
+  min-width: 190px;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.page[data-theme] .primaryButton {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.page[data-theme] .secondaryButton {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.page[data-theme] .primaryButton span,
+.page[data-theme] .secondaryButton span {
+  margin-left: auto;
+}
+
+.page[data-theme] .secondaryButton:hover,
+.page[data-theme] .secondaryButton:focus-visible {
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+@media (max-width: 800px) {
+  .page[data-theme] .hero h1 { font-size: clamp(3.4rem, 15vw, 5.6rem); }
+  .page[data-theme] .actions { flex-wrap: wrap; }
+  .page[data-theme] .primaryButton,
+  .page[data-theme] .secondaryButton { flex: 1 1 190px; }
+}
