@@ -25,9 +25,9 @@
   --shell-white: #f1f1e8;
   --bongo-drum: #ac8e85;
   --butcher-paper: #691420;
-  --complex-grey: #818362;
+  --complex-grey: #ffffff;
   --graphic-charcoal: #1e202b;
-  --sky-glass: #818362;
+  --sky-glass: #ffffff;
   --mist-grey: #f1f3fa;
   
   --home-background: var(--mist-grey);
@@ -3585,7 +3585,7 @@
 .page {
   --background: var(--mist-grey);
   --surface: rgba(241, 241, 232, 0.9);
-  --surface-soft: rgba(129, 131, 98, 0.25);
+  --surface-soft: rgba(255, 255, 255, 0.72);
   --text-primary: var(--very-navy);
   --text-secondary: var(--graphic-charcoal);
   --accent: var(--butcher-paper);
@@ -3600,7 +3600,7 @@
 .page[data-theme="dark"] {
   --background: #1e202b;
   --surface: rgba(42, 43, 54, 0.92);
-  --surface-soft: rgba(129, 131, 98, 0.25);
+  --surface-soft: rgba(255, 255, 255, 0.1);
   --text-primary: var(--shell-white);
   --text-secondary: var(--sky-glass);
   --accent: #ac8e85;

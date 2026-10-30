@@ -1030,7 +1030,7 @@ export function PhotoPortal({ theme }: { theme: Theme }) {
   );
 
   const photoBackgroundColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#818362" : "#1E202B"),
+    () => new THREE.Color(theme === "light" ? "#FFFFFF" : "#1E202B"),
     [theme]
   );
 
@@ -1319,7 +1319,7 @@ export function PhotoPortal({ theme }: { theme: Theme }) {
           ref={
             backgroundMaterialRef
           }
-          color="#818362"
+          color="#FFFFFF"
           transparent
           opacity={0.03}
           depthWrite={false}
@@ -1428,7 +1428,7 @@ function ForegroundWatermarkParticles({ theme }: { theme: Theme }) {
   } = useInteraction();
 
   const particleColor = useMemo(
-    () => new THREE.Color(theme === "light" ? "#818362" : "#F1F1E8"),
+    () => new THREE.Color(theme === "light" ? "#FFFFFF" : "#F1F1E8"),
     [theme]
   );
 
@@ -1801,7 +1801,7 @@ function ForegroundWatermarkParticles({ theme }: { theme: Theme }) {
 
       <pointsMaterial
         ref={ materialRef }
-        color="#818362"
+        color="#FFFFFF"
         size={0.024}
         sizeAttenuation
         transparent
