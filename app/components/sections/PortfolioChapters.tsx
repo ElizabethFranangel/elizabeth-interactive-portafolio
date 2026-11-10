@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "../../page.module.css";
 import transitions from "./SectionTransitions.module.css";
 import ViewportPager from "./ViewportPager";
+import ResearchAreasGallery from "./ResearchAreasGallery";
 import { CertificateTitle } from "../content/CertificatePreview";
 import { usePortfolioContent } from "../content/ContentProvider";
 
@@ -158,7 +159,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             ))}
           </div>
 
-          <ViewportPager key={activeResearchTab}>
+          {activeResearchTab === 1 ? <div id="research-panel-1" role="tabpanel" aria-label="Research areas"><ResearchAreasGallery /></div> : <ViewportPager key={activeResearchTab}>
           <div key={activeResearchTab} className={styles.researchTabPanel} id={`research-panel-${activeResearchTab}`} role="tabpanel">
           {activeResearchTab === 0 && <section className={styles.researchJourney} aria-labelledby="research-journey-title">
             <p className={styles.microLabel} id="research-journey-title">Research journey</p>
@@ -169,25 +170,6 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             </div>
           </section>}
 
-          {activeResearchTab === 1 && <div className={styles.researchContentGrid}>
-            <section className={styles.researchAreasContent} aria-labelledby="research-areas-title">
-              <p className={styles.microLabel} id="research-areas-title">Research areas</p>
-              <div>
-                {[
-                  ["Intelligent Optimization", "Design of algorithms for solving complex optimization problems."],
-                  ["Multi-objective Metaheuristics", "Development of metaheuristic approaches for multiple conflicting objectives."],
-                  ["Workflow Scheduling", "Scheduling and allocation of computational workflows under multiple objectives."],
-                  ["Cloud Computing", "Efficient resource allocation and performance optimization in cloud environments."],
-                  ["Computational Resource Allocation", "Strategies to allocate resources efficiently and cost-effectively."],
-                  ["Data Preprocessing", "Acquisition, cleaning and preparation of data to improve quality and usability."],
-                  ["Experimental Analysis", "Comparative evaluation of algorithms using experiments and statistical analysis."],
-                  ["Data Analysis", "Exploratory analysis and extraction of insights from data."],
-                ].map(([title, description], index) => <article key={title} data-hand-target data-hand-style="box"><span>{String(index + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{description}</p></article>)}
-              </div>
-            </section>
-
-          </div>}
-
           {activeResearchTab === 2 && <section><p className={styles.microLabel}>Certifications &amp; diplomas</p><ul className={styles.academicDevelopmentList}>
             {academicDevelopment.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
@@ -195,7 +177,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             {additionalTraining.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           </div>
-          </ViewportPager>
+          </ViewportPager>}
         </div>
       </section>
 

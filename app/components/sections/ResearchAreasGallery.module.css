@@ -1,0 +1,23 @@
+.gallery { break-inside: avoid-column; margin-top: 22px; padding-block: 4px 12px; }
+.eyebrow { margin: 0; color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+.stage { --step: clamp(110px, 19vw, 240px); position: relative; height: 325px; margin-top: 12px; overflow: hidden; perspective: 1200px; touch-action: pan-y; }
+.card { position: absolute; top: 18px; left: 50%; width: min(64%, 350px); height: 285px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; border: 1px solid var(--border); border-radius: 14px; text-align: left; color: var(--text-primary); background: color-mix(in srgb, var(--background) 85%, var(--bongo-drum)); box-shadow: 0 8px 24px var(--shadow); cursor: pointer; transform: translateX(calc(-50% + var(--offset) * var(--step))) scale(calc(1 - var(--distance) * .16)) rotateY(calc(var(--offset) * -8deg)); opacity: calc(1 - var(--distance) * .23); transition: transform 480ms cubic-bezier(.22,1,.36,1), opacity 480ms ease, background-color 300ms ease, border-color 300ms ease; }
+.card[aria-hidden="true"] { visibility: hidden; pointer-events: none; }
+.card[aria-pressed="true"] { background: color-mix(in srgb, var(--sky-glass) 48%, var(--background)); border-color: var(--accent); box-shadow: 0 14px 30px var(--shadow); }
+.card h3 { margin: 0; font: 400 clamp(17px, 1.5vw, 22px)/1.2 Georgia, serif; }
+.card p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+.card:not([aria-pressed="true"]) p { opacity: .55; }
+.number { position: absolute; top: 22px; left: 24px; line-height: 1; color: var(--accent); font-size: 11px; letter-spacing: .16em; }
+.symbol { width: 110px; height: 55px; flex-shrink: 0; fill: none; stroke: var(--text-primary); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+.controls { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 4px; color: var(--text-primary); font-size: 13px; font-variant-numeric: tabular-nums; }
+.controls > span > span { color: var(--muted); }
+.controls button { width: 42px; height: 36px; border: 1px solid var(--accent); border-radius: 7px; color: var(--text-primary); background: var(--surface); cursor: pointer; font: 24px/1 Georgia, serif; }
+.controls button:hover { background: var(--surface-soft); }
+.dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+.dots button { width: 20px; height: 20px; border: 0; padding: 6px; background: transparent; cursor: pointer; }
+.dots button::after { content: ""; display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.dots button[aria-current="true"]::after { background: var(--accent); }
+.gallery button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 720px) { .stage { --step: 115px; height: 315px; } .card { width: 78%; height: 275px; padding: 18px; gap: 10px; } .card p { font-size: 12px; } .symbol { height: 32px; } .number { top: 18px; left: 18px; } }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }
