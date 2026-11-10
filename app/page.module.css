@@ -3682,12 +3682,13 @@
 .previewCard4 { --preview-card-color: color-mix(in srgb, var(--sky-glass) 42%, var(--shell-white)); background: var(--preview-card-color); }
 .previewCard5 { --preview-card-color: color-mix(in srgb, var(--bongo-drum) 72%, var(--shell-white)); background: var(--preview-card-color); color: var(--very-navy); }
 .previewCard6 { --preview-card-color: var(--graphic-charcoal); background: var(--preview-card-color); color: var(--shell-white); }
-/* Retain each card's hue and chroma; dark mode changes only lightness. */
-.page[data-theme="dark"] .previewCard {
-  background: oklab(from var(--preview-card-color) calc(l * var(--preview-dark-lightness, .48)) a b);
-  color: var(--shell-white);
-}
-.previewCard6 { --preview-dark-lightness: .85; }
+/* Original dark palette; Home layout and light colors stay unchanged. */
+.page[data-theme="dark"] .previewCard1 { background: color-mix(in srgb, var(--very-navy) 76%, #2e343b); }
+.page[data-theme="dark"] .previewCard2 { background: color-mix(in srgb, #2e343b 82%, var(--bongo-drum)); }
+.page[data-theme="dark"] .previewCard3 { background: #32383e; }
+.page[data-theme="dark"] .previewCard4 { background: color-mix(in srgb, var(--very-navy) 64%, #2e343b); }
+.page[data-theme="dark"] .previewCard5 { background: color-mix(in srgb, var(--butcher-paper) 42%, #2e343b); color: var(--shell-white); }
+.page[data-theme="dark"] .previewCard6 { background: color-mix(in srgb, var(--graphic-charcoal) 84%, #252a30); }
 .quoteStrip { margin: 0; min-height: 82px; }
 
 /* Recovered portfolio chapters */
