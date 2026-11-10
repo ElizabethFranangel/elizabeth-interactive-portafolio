@@ -19,6 +19,9 @@ import HandHoverController from "./components/Interaction/HandHoverController";
 import HandCursor from "./components/Interaction/HandCursor";
 import PortfolioChapters from "./components/sections/PortfolioChapters";
 
+import { CertificateProvider } from "./components/content/CertificatePreview";
+import { ContentProvider, usePortfolioContent } from "./components/content/ContentProvider";
+
 type Theme = "light" | "dark";
 
 function ThemeSwitch({
@@ -101,6 +104,7 @@ const homeCards = [
 ] as const;
 
 function PortfolioContent() {
+  const { profile } = usePortfolioContent();
   const [theme, setTheme] = useState<Theme>("light");
   const sectionChangedByScroll = useRef(false);
   const programmaticScrollUntil = useRef(0);
@@ -351,13 +355,9 @@ function PortfolioContent() {
 
 
             <h1>
-              <span>
-                Elizabeth
-              </span>
+              <span>{profile.firstName}</span>
 
-              <span className={styles.lastName}>
-                del Angel Franco
-              </span>
+              <span className={styles.lastName}>{profile.lastName}</span>
             </h1>
 
 
@@ -375,9 +375,7 @@ function PortfolioContent() {
 
 
             <p className={styles.description}>
-              I research intelligent optimization, metaheuristics,
-              and workflow scheduling to design efficient, scalable,
-              and sustainable solutions in cloud computing.
+              {profile.description}
             </p>
 
 
@@ -387,7 +385,7 @@ function PortfolioContent() {
 
               <a
                 className={styles.socialLink}
-                href="https://www.linkedin.com/in/elizabeth-del-a-franco-2246273a9/"
+                href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -412,7 +410,7 @@ function PortfolioContent() {
 
               <a
                 className={styles.socialLink}
-                href="https://github.com/ElizabethFranangel"
+                href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
@@ -944,7 +942,7 @@ function PortfolioContent() {
 export default function Home() {
   return (
     <InteractionProvider>
-      <PortfolioContent />
+      <ContentProvider><CertificateProvider><PortfolioContent /></CertificateProvider></ContentProvider>
     </InteractionProvider>
   );
 }

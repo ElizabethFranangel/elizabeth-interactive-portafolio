@@ -1,5 +1,37 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Diseño e interacción
+
+Georgia se utiliza en títulos y Segoe UI en textos y controles. Las secciones alternan fondos y el contenido entra suavemente al desplazarse, respetando movimiento reducido. Publicaciones presenta una categoría por pestaña. El halo de los cuadros sigue su borde a 2 px; los enlaces de texto brillan directamente sobre sus letras.
+
+Las vistas de prueba en `.local-preview/` y `public/wireframes/` son locales y no se publican.
+
+## Administración del portafolio
+
+El enlace **Administrar · Iniciar sesión** del pie de página abre `/admin/` (incluye automáticamente la ruta del repositorio en GitHub Pages). El panel permite editar perfil, contacto, publicaciones, presentaciones, certificaciones y diplomados, participación y servicio académico, formación adicional, proyectos de investigación y listas de investigación y docencia; también agregar y quitar elementos de esas listas. Los textos editoriales, la cronología académica y los proyectos de software que siguen escritos directamente en los componentes todavía se editan en el código.
+
+Los títulos de los 18 certificados están integrados en Research, Teaching y Scientific presentations. Al pasar el puntero o enfocar un título aparece la imagen; un clic, Enter o un toque abre el visor ampliado. Escape cierra el visor. Se usan los fondos claros del ejemplo y los fondos oscuros originales. Solo se sirven imágenes en public/certificates: no se incluyen PDF ni enlaces de descarga.
+
+La web conserva su exportación estática. Supabase proporciona autenticación y almacenamiento compartido; los cambios guardados se muestran al abrir o recargar el portafolio sin recompilarlo. Sin configuración, se muestra el contenido original y el panel explica que falta conectar el servicio.
+
+### Activación
+
+1. Crea un proyecto en Supabase. En **Authentication → Users**, crea tu cuenta de administradora con correo y contraseña. Desactiva los registros públicos en las opciones de Auth si no los necesitas.
+2. Ejecuta `supabase/setup.sql` una vez en el SQL Editor. Copia el UUID de tu cuenta y ejecuta la sentencia `insert into public.portfolio_admins ...` indicada al final del archivo. Esa tabla define quién puede editar; tener una cuenta por sí solo no concede permisos.
+3. Copia `.env.example` a `.env.local`. Configura la URL y la clave **publishable** del proyecto. Nunca uses `service_role` ni claves secretas en variables `NEXT_PUBLIC_*`.
+4. Reinicia `npm run dev`, abre `/admin/` e inicia sesión. El primer guardado crea el contenido publicado en la base de datos.
+5. Para GitHub Pages, añade `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` en **Settings → Secrets and variables → Actions → Variables** del repositorio y ejecuta el workflow de despliegue. Estas variables se incorporan durante la compilación.
+
+La sesión vive en memoria y se pierde al recargar el panel. Si vence durante la edición, el panel permite iniciar sesión otra vez conservando los cambios en la pestaña. Los errores al guardar conservan el formulario. Si otra sesión modificó el contenido, se bloquea la sobrescritura: copia tus cambios antes de recargar y reconciliarlos. Cerrar sesión pide confirmación si quedan cambios sin guardar.
+
+Los visitantes solo pueden leer el contenido publicado. Las políticas de Row Level Security protegen las escrituras en la base de datos, incluso si alguien omite el panel. Todo el contenido de `portfolio_content` es público: no guardes información privada allí. Referencia: [RLS en Supabase](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
+### Verificación
+
+`node --test tests/content-service.test.cjs` comprueba validación y llamadas al servicio con respuestas simuladas. `npx tsc --noEmit` y `npm run build` verifican tipos y exportación estática.
+
+Una vez conectado el proyecto real, comprueba que un visitante puede leer pero no escribir, que una cuenta sin membresía no puede entrar ni guardar mediante REST y que la administradora puede agregar y actualizar elementos. Estas políticas requieren verificación con tu proyecto de Supabase; las pruebas locales no sustituyen esa comprobación.
+
 ## Getting Started
 
 First, run the development server:

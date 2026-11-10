@@ -1,4 +1,6 @@
 :root {
+  --font-body: "Segoe UI", Arial, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
   --background: #f0ebe1;
   --foreground: #3b495b;
   --interaction-cold: #d2dcd7;
@@ -28,7 +30,7 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -436,22 +438,21 @@ a {
    ========================================================= */
 
 [data-hand-target][data-hand-style="box"]::before {
-  width: 112%;
-  height: 145%;
+  inset: -2px;
+  width: auto;
+  height: auto;
+  filter: none;
 
   border:
     1px solid
     rgba( 211, 173, 104, 0 );
 
-  border-radius:
-    7px;
+  border-radius: inherit;
 
   background:
     rgba( 211, 173, 104, 0.02 );
 
-  transform:
-    translate(-50%, -50%)
-    scale(0.84);
+  transform: none;
 
   opacity: 0;
 
@@ -468,17 +469,15 @@ a {
 )::before {
   opacity: 1;
 
-  transform:
-    translate(-50%, -50%)
-    scale(1);
+  transform: none;
 
   border-color:
     rgba( 239, 209, 148, 0.72 );
 
   box-shadow:
-    0 0 8px
+    0 0 4px
       rgba( 211, 173, 104, 0.18 ),
-    inset 0 0 8px
+    inset 0 0 3px
       rgba( 211, 173, 104, 0.035);
 }
 /* =========================================================
@@ -528,4 +527,29 @@ a {
   box-shadow:
     0 0 10px
       rgba( 211, 173, 104, 0.18 );
+}
+
+/* Text glows directly; only framed controls receive a surrounding halo. */
+[data-hand-target]:not([data-hand-style="box"]):not([data-hand-style="icon"])::before,
+[data-hand-target]:not([data-hand-style="box"]):not([data-hand-style="icon"])::after {
+  content: none;
+}
+
+[data-hand-target]:not([data-hand-style="box"]):not([data-hand-style="icon"]):is(
+  :hover, :focus-visible, .hand-hover-active
+) {
+  color: var(--home-text, var(--foreground));
+  text-shadow:
+    0 0 3px rgba(239, 209, 148, .6),
+    0 0 8px rgba(211, 173, 104, .35);
+  transform: none;
+}
+
+[data-hand-target]:not([data-hand-style="box"]):not([data-hand-style="icon"]):is(
+  :active, .hand-pinch-active
+) {
+  color: var(--home-text, var(--foreground));
+  text-shadow:
+    0 0 3px rgba(255, 235, 190, .8),
+    0 0 10px rgba(211, 173, 104, .5);
 }

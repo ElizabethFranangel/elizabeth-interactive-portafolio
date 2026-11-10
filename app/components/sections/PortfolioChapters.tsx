@@ -1,136 +1,17 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "../../page.module.css";
+import transitions from "./SectionTransitions.module.css";
+import { CertificateTitle } from "../content/CertificatePreview";
+import { usePortfolioContent } from "../content/ContentProvider";
 
 type PortfolioChaptersProps = {
   onNavigate: (section: number) => void;
 };
 
-type PublicationType = "journal" | "conference" | "bookChapter" | "presentation";
-
-type Publication = {
-  id: string;
-  year: number;
-  type: PublicationType;
-  title: string;
-  authors: readonly { name: string; featured?: boolean }[];
-  journal: string;
-  volume: string;
-  issue: string;
-  pages: string;
-  doi: string;
-  tags: readonly string[];
-};
-
-const publications = ([
-  {
-    id: "J01",
-    year: 2025,
-    type: "journal",
-    title: "Experimental Study of Optimization Algorithms for Resource Allocation in Cloud Computing",
-    authors: [
-      { name: "Del Angel Franco, E.", featured: true },
-      { name: "Gómez-Santillán, C. G." },
-      { name: "Cruz Reyes, L." },
-      { name: "Rangel Valdez, N." },
-      { name: "Rivera Zarate, G." },
-    ],
-    journal: "International Journal of Combinatorial Optimization Problems and Informatics",
-    volume: "16",
-    issue: "4",
-    pages: "399–415",
-    doi: "10.61467/2007.1558.2025.v16i4.983",
-    tags: ["Cloud Computing", "Resource Allocation", "Optimization"],
-  },
-] satisfies Publication[]).sort((a, b) => b.year - a.year);
-
-const scientificPresentations = [
-  { id: "P01", year: 2025, month: "August 2025", type: "Scientific Presentation", title: "Efficient Workflow Scheduling with Heterogeneous Virtual Machines Using Competitive Coevolution", event: "International Seminar of Computational Intelligence — ISCI 2025" },
-  { id: "P02", year: 2024, month: "November 2024", type: "Oral Presentation", title: "Experimental Study of Optimization Algorithms for Resource Allocation in Cloud Computing", event: "Eureka International Workshop on Artificial Intelligence and Data Analytics — Eureka 2024" },
-  { id: "P03", year: 2024, month: "August 2024", type: "Scientific Presentation", title: "Comparative Study of Algorithms for Optimal Resource Allocation in Cloud Computing", event: "International Seminar of Computational Intelligence — ISCI 2024" },
-] as const;
-
-const researchNodes = [
-  "Multiobjective Optimization",
-  "Metaheuristics",
-  "Resource Allocation",
-  "Cloud Computing",
-  "Evolutionary Algorithms",
-  "Scheduling Optimization",
-] as const;
-
-const researchPipeline = [
-  "Scientific Workflow",
-  "Ready Tasks",
-  "Optimization Algorithm",
-  "Resource Allocation",
-  "Virtual Machines",
-  "Execution",
-  "Performance Evaluation",
-] as const;
-
-const optimizationFamilies = [
-  { family: "Evolutionary", methods: ["NSGA-II", "NSGA-III", "Genetic Algorithms"] },
-  { family: "Cooperative", methods: ["Cooperative Coevolution", "Multi-species approaches"] },
-  { family: "Swarm / Population-based", methods: ["ACO", "PSO", "Differential Evolution"] },
-] as const;
-
-const workflowBenchmarks = ["CyberShake", "Epigenomics", "Montage", "LIGO Inspiral", "SIPHT"] as const;
-
-const projects = [
-  {
-    id: "P01",
-    type: "Research Software",
-    status: "Published Research",
-    title: "GA Scheduling Algorithm for WorkflowSim",
-    subtitle: "Genetic Algorithm implementation for scientific workflow scheduling in cloud computing environments.",
-    description: "Implementation of a Genetic Algorithm scheduler integrated directly into WorkflowSim 1.0 for experimental evaluation of scientific workflow scheduling in cloud computing.",
-    repository: "PCC-ITCM-TecNM / GAScheduling",
-    repositoryUrl: "https://github.com/PCC-ITCM-TecNM/GAScheduling",
-    repositoryAvailable: true,
-    topics: ["Workflow Scheduling", "Resource Allocation", "Cloud Computing", "Genetic Algorithms"],
-    technologies: ["Java", "WorkflowSim 1.0", "CloudSim"],
-  },
-  {
-    id: "P02",
-    type: "Ongoing Research",
-    status: "Research in Progress",
-    title: "Cloud Workflow Scheduling Metaheuristics",
-    subtitle: "Research software for computational experimentation in cloud workflow scheduling.",
-    description: "Research repository focused on the development and experimental evaluation of metaheuristic approaches for workflow scheduling in cloud computing environments.",
-    repository: "ElizabethFranangel / CloudWorkflowSchedulingMetaheuristics",
-    repositoryUrl: "https://github.com/ElizabethFranangel/CloudWorkflowSchedulingMetaheuristics",
-    repositoryAvailable: false,
-    topics: ["Workflow Scheduling", "Cloud Computing", "Metaheuristics", "Multiobjective Optimization"],
-    technologies: [],
-  },
-] as const;
-
-const teachingInterests = [
-  "Programming",
-  "Algorithms & Data Structures",
-  "Artificial Intelligence",
-  "Optimization",
-  "Databases",
-  "Cloud Computing",
-  "Foundations of Computer Science",
-  "Data Analysis",
-] as const;
-
-const academicActivities = [
-  { year: "2024", type: "Workshop", title: "Applications of Artificial Intelligence", context: "International Day of Women and Girls in Science", detail: "Ciudad Madero, Tamaulipas", verified: true },
-  { year: "2023", type: "Scientific Outreach Talk", title: "A walk through the paths of Artificial Intelligence", context: "Introductory scientific outreach on artificial intelligence for student audiences.", verified: true },
-  { year: "2022", type: "Adjunct Academic Support", title: "Analysis and Design of Algorithms", context: "Computer Systems Engineering", detail: "Instituto Tecnológico de Ciudad Madero", verified: true },
-] as const;
-
-const teachingAreas = [
-  { group: "Foundations", areas: ["Programming", "Object-Oriented Programming", "Algorithms", "Data Structures", "Computational Logic"] },
-  { group: "Data & Intelligence", areas: ["Artificial Intelligence", "Data Analysis", "Databases", "Machine Learning Foundations"] },
-  { group: "Advanced Computing", areas: ["Optimization", "Metaheuristics", "Cloud Computing", "Computational Resource Allocation"] },
-] as const;
-
 export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps) {
+  const { profile, publications, scientificPresentations, academicDevelopment, academicService, additionalTraining, researchNodes, researchPipeline, optimizationFamilies, workflowBenchmarks, projects, teachingInterests, academicActivities, teachingAreas } = usePortfolioContent();
   const [formStatus, setFormStatus] = useState("");
   const [activeResearchTab, setActiveResearchTab] = useState(0);
   const [activeTeachingTab, setActiveTeachingTab] = useState(0);
@@ -141,6 +22,39 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
   const publicationNavigationRef = useRef<HTMLDivElement>(null);
   const projectNavigationRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+    const sections = [...document.querySelectorAll<HTMLElement>("[data-section-transition]")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        (entry.target as HTMLElement).dataset.reveal = "entered";
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.04, rootMargin: "0px 0px -24px 0px" });
+    const configure = () => {
+      observer.disconnect();
+      sections.forEach((section) => {
+        const bounds = section.getBoundingClientRect();
+        const visible = bounds.top < window.innerHeight && bounds.bottom > 0;
+        if (reducedMotion.matches || visible || section.dataset.reveal === "entered") {
+          section.dataset.reveal = "entered";
+        } else {
+          section.dataset.reveal = "waiting";
+          observer.observe(section);
+        }
+      });
+    };
+    configure();
+    reducedMotion.addEventListener("change", configure);
+    return () => {
+      observer.disconnect();
+      reducedMotion.removeEventListener("change", configure);
+      sections.forEach((section) => { delete section.dataset.reveal; });
+    };
+  }, []);
+
   const publicationTabs = [
     { label: "Journal Article", count: publications.filter((publication) => publication.type === "journal").length },
     { label: "Book Chapters", count: 1 },
@@ -149,17 +63,14 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
     { label: "Scientific presentations", count: scientificPresentations.length },
   ] as const;
 
-  const activePublicationPage = Math.floor(activePublicationTab / 2);
-
-  const showNextPublicationPage = () => {
-    const nextPage = (activePublicationPage + 1) % 3;
-    const nextTab = nextPage * 2;
+  const showNextPublicationTab = () => {
+    const nextTab = (activePublicationTab + 1) % publicationTabs.length;
     setActivePublicationTab(nextTab);
     publicationNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   };
 
   const showNextTeachingPage = () => {
-    const nextTab = (activeTeachingTab + 1) % 2;
+    const nextTab = (activeTeachingTab + 1) % 3;
     setActiveTeachingTab(nextTab);
     teachingNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   };
@@ -185,10 +96,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
   return (
     <>
-      <section id="about" className={`${styles.chapter} ${styles.aboutChapter}`}>
+      <section id="about" data-section-transition data-section-tone="base" className={`${styles.chapter} ${styles.aboutChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">01</span>
         <div className={styles.chapterDecor} aria-hidden="true" />
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={styles.chapterHeader}>
             <p className={styles.sectionEyebrow}>01 / About me</p>
             <h2 className={styles.sectionTitle}>Research, technology and <span>purpose.</span></h2>
@@ -206,14 +117,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
               <div className={styles.aboutProfile}>
                 <p className={styles.microLabel}>Professional profile</p>
                 <p>
-                  Computer science researcher specializing in intelligent optimization,
-                  multi-objective metaheuristics, and workflow scheduling in cloud computing environments.
+                  {profile.bio}
                 </p>
                 <p>
-                  My profile combines scientific research, software development, and data analysis
-                  with the design of methods for optimization and efficient resource allocation. My
-                  work focuses on applied research, university teaching, and the development of
-                  computational solutions for complex problems.
+                  {profile.background}
                 </p>
                 <div className={styles.keywordRow} aria-label="Professional areas">
                   <span>Research</span><span>Software</span><span>Data</span><span>Teaching</span>
@@ -254,15 +161,15 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         </div>
       </section>
 
-      <section id="research" className={`${styles.chapter} ${styles.researchChapter}`}>
+      <section id="research" data-section-transition data-section-tone="alternate" className={`${styles.chapter} ${styles.researchChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">02</span>
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.researchContentHero}`}>
             <p className={styles.sectionEyebrow}>02 / Research</p>
           </header>
 
           <div ref={researchNavigationRef} className={styles.publicationOverview} role="tablist" aria-label="Research subsections">
-            {[{ label: "Research journey", count: 2 }, { label: "Research areas", count: 8 }, { label: "Academic development", count: 4 }].map((tab, index) => (
+            {[{ label: "Research journey", count: 2 }, { label: "Research areas", count: 8 }, { label: "Academic development", count: academicDevelopment.length + additionalTraining.length }].map((tab, index) => (
               <button key={tab.label} type="button" role="tab" aria-selected={activeResearchTab === index} aria-controls={`research-panel-${index}`} className={activeResearchTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveResearchTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeResearchTab + 2) % 3 ? "" : undefined} data-hand-next={index === (activeResearchTab + 1) % 3 ? "" : undefined} data-hand-target data-hand-style="box"><strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span></button>
             ))}
           </div>
@@ -297,13 +204,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
           </div>}
 
-          {activeResearchTab === 2 && <section><p className={styles.microLabel}>Academic development</p><ul className={styles.academicDevelopmentList}>
-            {[
-              ["AD01", "2026", "Administración de amenazas cibernéticas", "UNAM · Julio 2026"],
-              ["AD02", "2025", "Diplomado en integración de inteligencia artificial en escenarios de aprendizaje", "TecNM · Mayo 2025"],
-              ["AD03", "2024", "MENDIX Developer", "mx Mendix · Abril 2024"],
-              ["AD04", "2024", "Ciencias de Datos", "TecNM · Enero 2024"],
-            ].map(([id, year, title, institution]) => <li key={id}><span>{id}</span><div><h3>{title}</h3><p>{institution}</p></div><time>{year}</time></li>)}
+          {activeResearchTab === 2 && <section><p className={styles.microLabel}>Certifications &amp; diplomas</p><ul className={styles.academicDevelopmentList}>
+            {academicDevelopment.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
+          </ul><p className={styles.microLabel}>Additional training · Entrepreneurship</p><ul className={styles.academicDevelopmentList}>
+            {additionalTraining.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           </div>
           <button className={styles.publicationBodyNext} type="button" onClick={showNextResearchPage} aria-label="Show next research subsection" data-hand-target data-hand-next data-hand-style="icon">›</button>
@@ -311,9 +215,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         </div>
       </section>
 
-      <section id="teaching" className={`${styles.chapter} ${styles.teachingChapter}`}>
+      <section id="teaching" data-section-transition data-section-tone="base" className={`${styles.chapter} ${styles.teachingChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">03</span>
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.teachingHero}`}>
             <p className={styles.sectionEyebrow}>03 / Teaching &amp; academic engagement</p>
           </header>
@@ -322,8 +226,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             {[
               { label: "Teaching experience", count: 1 },
               { label: "Academic & scientific outreach", count: 2 },
+              { label: "Participation & academic service", count: academicService.length },
             ].map((tab, index) => (
-              <button key={tab.label} type="button" role="tab" aria-selected={activeTeachingTab === index} aria-controls={`teaching-panel-${index}`} className={activeTeachingTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveTeachingTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeTeachingTab + 1) % 2 ? "" : undefined} data-hand-next={index === (activeTeachingTab + 1) % 2 ? "" : undefined} data-hand-target data-hand-style="box">
+              <button key={tab.label} type="button" role="tab" aria-selected={activeTeachingTab === index} aria-controls={`teaching-panel-${index}`} className={activeTeachingTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveTeachingTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeTeachingTab + 2) % 3 ? "" : undefined} data-hand-next={index === (activeTeachingTab + 1) % 3 ? "" : undefined} data-hand-target data-hand-style="box">
                 <strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span>
               </button>
             ))}
@@ -331,11 +236,14 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
           <div className={styles.teachingBody}>
             <div key={activeTeachingTab} className={styles.teachingPanel} id={`teaching-panel-${activeTeachingTab}`} role="tabpanel">
-              {activeTeachingTab === 0 && <section><p className={styles.microLabel}>Teaching experience</p><article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>TE01</strong><time>2022</time><span>Adjunct Academic Support</span></div><div className={styles.publicationRecord}><h3>Analysis and Design of Algorithms</h3><p className={styles.publicationAuthors}>Academic support within the Computer Systems Engineering program.</p><p className={styles.publicationJournal}>Tecnológico Nacional de México · Instituto Tecnológico de Ciudad Madero</p><p className={styles.publicationMeta}>Aug — Dec 2022</p><ul className={styles.publicationTags}><li>Algorithms</li><li>Computer Science</li><li>2022</li></ul></div></article></section>}
+              {activeTeachingTab === 0 && <section><p className={styles.microLabel}>Teaching experience</p><article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>TE01</strong><time>2022</time><span>Adjunct Academic Support</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="TE01">Analysis and Design of Algorithms</CertificateTitle></h3><p className={styles.publicationAuthors}>Academic support within the Computer Systems Engineering program.</p><p className={styles.publicationJournal}>Tecnológico Nacional de México · Instituto Tecnológico de Ciudad Madero</p><p className={styles.publicationMeta}>Aug — Dec 2022</p><ul className={styles.publicationTags}><li>Algorithms</li><li>Computer Science</li><li>2022</li></ul></div></article></section>}
 
               {activeTeachingTab === 1 && <section><p className={styles.microLabel}>Academic &amp; scientific outreach</p><div className={styles.publicationArchive}>
-                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>01</strong><time>2024</time><span>Workshop</span></div><div className={styles.publicationRecord}><h3>Applications of Artificial Intelligence</h3><p className={styles.publicationJournal}>International Day of Women and Girls in Science</p><p className={styles.publicationMeta}>Ciudad Madero, Tamaulipas</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
-                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>02</strong><time>2023</time><span>Scientific Outreach Talk</span></div><div className={styles.publicationRecord}><h3>A walk through the paths of Artificial Intelligence</h3><p className={styles.publicationAuthors}>Introductory scientific outreach on artificial intelligence for student audiences.</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
+                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>01</strong><time>2024</time><span>Workshop</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT01">Applications of Artificial Intelligence</CertificateTitle></h3><p className={styles.publicationJournal}>International Day of Women and Girls in Science</p><p className={styles.publicationMeta}>Ciudad Madero, Tamaulipas</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
+                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>02</strong><time>2023</time><span>Scientific Outreach Talk</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT02">A walk through the paths of Artificial Intelligence</CertificateTitle></h3><p className={styles.publicationAuthors}>Introductory scientific outreach on artificial intelligence for student audiences.</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
+              </div></section>}
+              {activeTeachingTab === 2 && <section><p className={styles.microLabel}>Participation &amp; academic service</p><div className={styles.publicationArchive}>
+                {academicService.map((item) => <article key={item.id} className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{item.id}</strong><time>{item.year}</time><span>{item.type}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p className={styles.publicationAuthors}>{item.description}</p><p className={styles.publicationJournal}>{item.institution}</p><p className={styles.publicationMeta}>{item.date}</p></div></article>)}
               </div></section>}
             </div>
             <button className={styles.publicationBodyNext} type="button" onClick={showNextTeachingPage} aria-label="Show next teaching subsection" data-hand-target data-hand-next data-hand-style="icon">›</button>
@@ -343,9 +251,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         </div>
       </section>
 
-      <section id="publications" className={`${styles.chapter} ${styles.publicationsChapter}`}>
+      <section id="publications" data-section-transition data-section-tone="alternate" className={`${styles.chapter} ${styles.publicationsChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">04</span>
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.publicationsHero}`}>
             <p className={styles.sectionEyebrow}>04 / Publications</p>
           </header>
@@ -358,6 +266,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   type="button"
                   role="tab"
                   aria-selected={activePublicationTab === index}
+                  id={`publication-tab-${index}`}
                   aria-controls={`publication-panel-${index}`}
                   className={activePublicationTab === index ? styles.activePublicationTab : undefined}
                   onClick={(event) => {
@@ -377,9 +286,8 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
           </div>
 
           <div className={styles.publicationBody}>
-          <div key={activePublicationPage} className={styles.publicationsEditorial} id={`publication-panel-${activePublicationTab}`} role="tabpanel">
-            {activePublicationPage === 0 && (
-            <>
+          <div key={activePublicationTab} className={styles.publicationsEditorial} id={`publication-panel-${activePublicationTab}`} role="tabpanel" aria-labelledby={`publication-tab-${activePublicationTab}`}>
+            {activePublicationTab === 0 && (
             <section className={styles.peerReviewed} aria-labelledby="peer-reviewed-title">
               <p className={styles.microLabel} id="peer-reviewed-title">Journal Article</p>
               <div className={styles.publicationArchive}>
@@ -405,6 +313,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                 ))}
               </div>
             </section>
+            )}
+
+            {activePublicationTab === 1 && (
             <section className={styles.peerReviewed}>
               <p className={styles.microLabel}>Book Chapters</p>
               <div className={styles.publicationArchive}>
@@ -420,11 +331,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                 </article>
               </div>
             </section>
-            </>
             )}
 
-            {activePublicationPage === 1 && (
-              <>
+            {activePublicationTab === 2 && (
               <section className={styles.peerReviewed}>
                 <p className={styles.microLabel}>Books</p>
                 <div className={styles.publicationArchive}>
@@ -440,6 +349,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   </article>
                 </div>
               </section>
+            )}
+
+            {activePublicationTab === 3 && (
               <section className={styles.peerReviewed}>
                 <p className={styles.microLabel}>Under review</p>
                 <div className={styles.publicationArchive}>
@@ -457,10 +369,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   </article>
                 </div>
               </section>
-              </>
             )}
 
-            {activePublicationPage === 2 && (
+            {activePublicationTab === 4 && (
             <section className={styles.presentationsSection} aria-labelledby="presentations-title">
               <p className={styles.microLabel} id="presentations-title">Scientific presentations</p>
               <div className={styles.publicationArchive}>
@@ -468,7 +379,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   <article key={presentation.id} className={styles.publicationEntry}>
                     <div className={styles.publicationIndex}><strong>{presentation.id}</strong><time>{presentation.year}</time><span>{presentation.type}</span></div>
                     <div className={styles.publicationRecord}>
-                      <h3>{presentation.title}</h3>
+                      <h3><CertificateTitle id={presentation.id}>{presentation.title}</CertificateTitle></h3>
                       <p className={styles.publicationJournal}>{presentation.event}</p>
                       <p className={styles.publicationMeta}>{presentation.month}</p>
                       <ul><li>Presentation</li></ul>
@@ -479,14 +390,14 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             </section>
             )}
           </div>
-          <button className={styles.publicationBodyNext} type="button" onClick={showNextPublicationPage} aria-label="Show next publication information page" data-hand-target data-hand-next data-hand-style="icon">›</button>
+          <button className={styles.publicationBodyNext} type="button" onClick={showNextPublicationTab} aria-label="Show next publication category" data-hand-target data-hand-next data-hand-style="icon">›</button>
           </div>
         </div>
       </section>
 
-      <section id="projects" className={`${styles.chapter} ${styles.projectsChapter}`}>
+      <section id="projects" data-section-transition data-section-tone="base" className={`${styles.chapter} ${styles.projectsChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">05</span>
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.projectsHero}`}>
             <p className={styles.sectionEyebrow}>05 / Projects</p>
           </header>
@@ -596,17 +507,17 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         </div>
       </section>
 
-      <section id="contact" className={`${styles.chapter} ${styles.contactChapter}`}>
+      <section id="contact" data-section-transition data-section-tone="alternate" className={`${styles.chapter} ${styles.contactChapter} ${transitions.section}`}>
         <span className={styles.chapterNumber} aria-hidden="true">06</span>
-        <div className={styles.chapterInner}>
+        <div className={`${styles.chapterInner} ${transitions.content}`}>
           <div className={styles.contactEditorial}>
             <div>
               <p className={styles.sectionEyebrow}>06 / Contact</p>
               <h2 className={styles.sectionTitle}>Let&apos;s <span>connect.</span></h2>
-              <p className={styles.chapterIntro}>I welcome conversations about academic collaboration, research, university teaching, technology projects and professional opportunities.</p>
+              <p className={styles.chapterIntro}>{profile.contact}</p>
               <div className={styles.contactLinks}>
-                <a href="https://www.linkedin.com/in/elizabeth-del-a-franco-2246273a9/" target="_blank" rel="noopener noreferrer" data-hand-target>LinkedIn <span>↗</span></a>
-                <a href="https://github.com/ElizabethFranangel" target="_blank" rel="noopener noreferrer" data-hand-target>GitHub <span>↗</span></a>
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" data-hand-target>LinkedIn <span>↗</span></a>
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" data-hand-target>GitHub <span>↗</span></a>
               </div>
             </div>
 
@@ -623,6 +534,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <footer className={styles.footer}>
           <span>Elizabeth del Ángel Franco</span>
           <span>© 2026 · Computer Science Researcher</span>
+          <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/`} data-hand-target>Administrar · Iniciar sesión</a>
           <button type="button" onClick={() => onNavigate(0)} data-hand-target>Back to top ↑</button>
         </footer>
       </section>

@@ -3716,7 +3716,7 @@
 .chapterDecor { position: absolute; right: 8vw; bottom: 8vh; width: 180px; aspect-ratio: 1; border: 1px solid var(--border); border-radius: 50%; opacity: .25; pointer-events: none; }
 .chapterHeader { max-width: 780px; }
 .chapter .sectionEyebrow,
-.microLabel { color: var(--accent); font: 650 .68rem/1.4 var(--font-geist-sans), Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; }
+.microLabel { color: var(--accent); font: 650 .68rem/1.4 var(--font-body), Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; }
 .chapter .sectionTitle { color: var(--text-primary); font: 400 clamp(2rem, 3vw, 3.2rem)/.98 Georgia, serif; letter-spacing: -.035em; }
 .chapter .sectionTitle span { color: var(--accent); font-style: italic; text-shadow: none; }
 .chapterIntro,
@@ -4016,7 +4016,7 @@
 .publicationOverview strong { color: var(--text-primary); font: 400 clamp(1.35rem,1.65vw,1.9rem)/1 Georgia,"Times New Roman",serif; letter-spacing: .01em; }
 .publicationOverview span { color: var(--accent); font: 400 clamp(.68rem,.82vw,.86rem)/1.15 Georgia,"Times New Roman",serif; }
 .publicationBody { display: grid; grid-template-columns: minmax(0,1fr) 38px; gap: 18px; align-items: stretch; margin-top: 30px; }
-.publicationsEditorial { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(34px,4vw,68px); animation: publicationPanelIn 380ms cubic-bezier(.22,1,.36,1); }
+.publicationsEditorial { display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(34px,4vw,68px); animation: publicationPanelIn 380ms cubic-bezier(.22,1,.36,1); }
 @keyframes publicationPanelIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
 .publicationBodyNext { display: grid; place-items: center; min-height: 120px; border: 1px solid var(--accent); border-radius: 8px; color: var(--text-primary); background: color-mix(in srgb,var(--surface) 84%,transparent); font: 400 1.55rem/1 Georgia,serif; cursor: pointer; transition: background-color 250ms ease,transform 250ms ease; }
 .publicationBodyNext:is(:hover,:focus-visible,.hand-hover-active) { background: var(--surface-soft); transform: none !important; }
@@ -4292,17 +4292,38 @@
   }
 }
 
-/* Site-wide type system: Cabin for UI and reading, Newsreader for display. */
-.page,
+/* Reference typography: Segoe UI for reading and Georgia for headings. */
+.page[data-theme="light"] {
+  --home-background: #f6f5f0;
+  --home-surface: rgba(246, 245, 240, .9);
+  --background: #f6f5f0;
+  --section-alternate: #fffefa;
+}
+
+.page[data-theme="dark"] {
+  --home-background: #252a30;
+  --home-surface: rgba(46, 52, 59, .78);
+  --background: #252a30;
+  --section-alternate: color-mix(in srgb, #252a30 88%, var(--sky-glass) 12%);
+}
+
+.page {
+  font-family: var(--font-body) !important;
+}
+
 .page :where(*) {
-  font-family: var(--font-cabin), Cabin, system-ui, sans-serif !important;
+  font-family: inherit !important;
 }
 
 .page :where(h1, h2, h3),
 .page .brandName,
 .page .signature,
 .page .footer > span:first-child {
-  font-family: var(--font-newsreader), Newsreader, Georgia, serif !important;
+  font-family: var(--font-display) !important;
+}
+
+.page :where(h1, h2, h3) {
+  font-weight: 400;
 }
 
 /* Final mobile guard for the expanded Teaching section. */
