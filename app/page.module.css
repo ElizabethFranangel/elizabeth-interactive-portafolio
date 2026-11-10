@@ -3307,11 +3307,6 @@
   color: var(--shell-white);
 }
 
-.page[data-theme="dark"] .previewCard1 { background: color-mix(in srgb, var(--very-navy) 76%, #2e343b); }
-.page[data-theme="dark"] .previewCard2 { background: color-mix(in srgb, #2e343b 82%, var(--bongo-drum)); }
-.page[data-theme="dark"] .previewCard3 { background: #32383e; }
-.page[data-theme="dark"] .previewCard4 { background: color-mix(in srgb, var(--butcher-paper) 42%, #2e343b); }
-.page[data-theme="dark"] .previewCard5 { background: color-mix(in srgb, var(--graphic-charcoal) 84%, #252a30); }
 .page[data-theme="dark"] .previewCard { color: var(--shell-white); }
 
 .previewIcon {
@@ -3681,15 +3676,18 @@
 .previewCard { min-height: clamp(190px, 18vw, 245px); padding: clamp(20px, 1.8vw, 27px); border-radius: 10px; }
 .previewCard h2 { font: 400 clamp(1rem, 1.35vw, 1.28rem)/1.1 Georgia, serif; letter-spacing: .05em; text-transform: uppercase; }
 .previewCard p { min-height: 0; font: 400 clamp(.7rem, .82vw, .82rem)/1.55 Georgia, serif; }
-.previewCard1 { background: color-mix(in srgb, var(--sky-glass) 72%, var(--shell-white)); }
-.previewCard2 { background: color-mix(in srgb, var(--shell-white) 88%, var(--bongo-drum)); }
-.previewCard3 { background: color-mix(in srgb, var(--shell-white) 95%, var(--complex-grey)); }
-.previewCard4 { background: color-mix(in srgb, var(--sky-glass) 42%, var(--shell-white)); }
-.previewCard5 { background: color-mix(in srgb, var(--bongo-drum) 72%, var(--shell-white)); color: var(--very-navy); }
-.previewCard6 { background: var(--graphic-charcoal); color: var(--shell-white); }
-.page[data-theme="dark"] .previewCard4 { background: color-mix(in srgb, var(--very-navy) 64%, #2e343b); }
-.page[data-theme="dark"] .previewCard5 { background: color-mix(in srgb, var(--butcher-paper) 42%, #2e343b); color: var(--shell-white); }
-.page[data-theme="dark"] .previewCard6 { background: color-mix(in srgb, var(--graphic-charcoal) 84%, #252a30); }
+.previewCard1 { --preview-card-color: color-mix(in srgb, var(--sky-glass) 72%, var(--shell-white)); background: var(--preview-card-color); }
+.previewCard2 { --preview-card-color: color-mix(in srgb, var(--shell-white) 88%, var(--bongo-drum)); background: var(--preview-card-color); }
+.previewCard3 { --preview-card-color: color-mix(in srgb, var(--shell-white) 95%, var(--complex-grey)); background: var(--preview-card-color); }
+.previewCard4 { --preview-card-color: color-mix(in srgb, var(--sky-glass) 42%, var(--shell-white)); background: var(--preview-card-color); }
+.previewCard5 { --preview-card-color: color-mix(in srgb, var(--bongo-drum) 72%, var(--shell-white)); background: var(--preview-card-color); color: var(--very-navy); }
+.previewCard6 { --preview-card-color: var(--graphic-charcoal); background: var(--preview-card-color); color: var(--shell-white); }
+/* Retain each card's hue and chroma; dark mode changes only lightness. */
+.page[data-theme="dark"] .previewCard {
+  background: oklab(from var(--preview-card-color) calc(l * var(--preview-dark-lightness, .48)) a b);
+  color: var(--shell-white);
+}
+.previewCard6 { --preview-dark-lightness: .85; }
 .quoteStrip { margin: 0; min-height: 82px; }
 
 /* Recovered portfolio chapters */
@@ -4335,4 +4333,29 @@
   .teachingChapter .teachingEditorial,
   .teachingChapter .teachingApproach > div,
   .teachingChapter .teachingAreas > div { grid-template-columns: 1fr; }
+}
+
+
+/* Keep the closing quote inside Home, beneath its navigation cards. */
+.page[data-theme] .hero {
+  --home-inline-padding: clamp(24px, 6vw, 104px);
+  padding-inline: var(--home-inline-padding);
+  padding-bottom: 0;
+}
+.hero > .quoteStrip {
+  margin-top: 24px;
+  margin-inline: calc(-1 * var(--home-inline-padding));
+  width: calc(100% + 2 * var(--home-inline-padding));
+}
+@media (min-width: 801px) {
+  .page[data-theme] .hero {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    gap: 0;
+  }
+  .heroPrimary { min-height: 0; }
+  .homeLower { margin-top: 24px; padding-top: 0; }
+  .previewCard { min-height: clamp(180px, 23vh, 218px); }
 }

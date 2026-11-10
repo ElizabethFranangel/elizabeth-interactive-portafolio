@@ -516,9 +516,7 @@ function PortfolioContent() {
             <div className={styles.scrollLine} />
           </div>
 
-        </section>
-
-        <footer className={styles.quoteStrip} aria-label="Portfolio closing thought">
+        <footer className={styles.quoteStrip} aria-label="Home quote">
           <span className={styles.quoteMark} aria-hidden="true">“</span>
           <blockquote>
             Efficiency is not just about speed. It is about making intelligent choices that create sustainable impact.
@@ -528,6 +526,7 @@ function PortfolioContent() {
             Elizabeth del Ángel Franco
           </div>
         </footer>
+        </section>
 
         <PortfolioChapters onNavigate={setCurrentSection} />
 
