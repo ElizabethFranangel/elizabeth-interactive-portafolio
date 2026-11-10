@@ -1,11 +1,14 @@
 "use client";
 
+import { useLanguage } from "../content/LanguageProvider";
+
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./ViewportPager.module.css";
 
 const columnGap = 28;
 
 export default function ViewportPager({ children }: { children: ReactNode }) {
+  const { t } = useLanguage();
   const root = useRef<HTMLDivElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const flow = useRef<HTMLDivElement>(null);
@@ -83,12 +86,12 @@ export default function ViewportPager({ children }: { children: ReactNode }) {
     else goTo(Math.max(0, page - 1));
   }}>
     {page > 0 && <button type="button" className={`${styles.next} ${styles.previous}`} onClick={() => goTo(page - 1)}
-      aria-label="Previous content page"
+      aria-label={t("Previous content page")}
       data-hand-target data-hand-prev data-hand-style="box">‹</button>}
     <div className={styles.main}>
       <div className={styles.pagination}>
         {pageCount > 1 && <>
-          <span role="status" aria-live="polite">{page + 1} de {pageCount}</span>
+          <span role="status" aria-live="polite">{page + 1}{" "}{t("of")}{" "}{pageCount}</span>
         </>}
       </div>
       <div ref={viewport} className={styles.viewport} data-page-viewport style={{ height: size.height }} onScroll={event => {
@@ -104,7 +107,7 @@ export default function ViewportPager({ children }: { children: ReactNode }) {
       </div>
     </div>
     {page < pageCount - 1 && <button type="button" className={styles.next} onClick={next}
-      aria-label="Next content page"
+      aria-label={t("Next content page")}
       data-hand-target data-hand-next data-hand-style="box">›</button>}
   </div>;
 }

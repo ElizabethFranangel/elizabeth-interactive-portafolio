@@ -24,7 +24,7 @@
   transform: none;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1500px) {
   .section[data-section-transition] {
     --section-header-height: 124px;
   }

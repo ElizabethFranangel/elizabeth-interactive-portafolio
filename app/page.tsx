@@ -1,5 +1,8 @@
 "use client";
 
+import { useLanguage, LanguageProvider } from "./components/content/LanguageProvider";
+import LanguageSwitch from "./components/content/LanguageSwitch";
+
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
@@ -31,6 +34,7 @@ function ThemeSwitch({
   theme: Theme;
   onToggle: () => void;
 }) {
+  const { t } = useLanguage();
   return (
     <button
       className={styles.themeToggle}
@@ -38,8 +42,8 @@ function ThemeSwitch({
       onClick={onToggle}
       role="switch"
       aria-checked={theme === "dark"}
-      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+      aria-label={t(theme === "light" ? "Switch to dark mode" : "Switch to light mode")}
+      title={t(theme === "light" ? "Switch to dark mode" : "Switch to light mode")}
       data-hand-target
       data-hand-style="box"
     >
@@ -50,7 +54,7 @@ function ThemeSwitch({
           <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z" />
         )}
       </svg>
-      <span className={styles.themeLabel}>{theme === "light" ? "Light" : "Dark"}</span>
+      <span className={styles.themeLabel}>{t(theme === "light" ? "Light" : "Dark")}</span>
       <span className={styles.themeTrack} aria-hidden="true">
         <span className={styles.themeThumb} />
       </span>
@@ -104,6 +108,7 @@ const homeCards = [
 ] as const;
 
 function PortfolioContent() {
+  const { t } = useLanguage();
   const { profile } = usePortfolioContent();
   const [theme, setTheme] = useState<Theme>("light");
   const sectionChangedByScroll = useRef(false);
@@ -240,7 +245,7 @@ function PortfolioContent() {
       {currentSection === 0 && (
         <div className={styles.homeControls}>
           <InputModeSelector variant="home" />
-          <ThemeSwitch theme={theme} onToggle={toggleTheme} />
+          <div className={styles.appearanceControls}><ThemeSwitch theme={theme} onToggle={toggleTheme} /><LanguageSwitch /></div>
         </div>
       )}
 
@@ -278,22 +283,18 @@ function PortfolioContent() {
             E
           </span>
 
-          <span className={styles.brandName}>
-            Elizabeth Franco
-          </span>
+          <span className={styles.brandName}>{t("Elizabeth Franco ")}</span>
 
           <span className={styles.brandBotanical} aria-hidden="true" />
         </div>
 
 
-        <div className={styles.navLinks} aria-label="Portfolio sections">
+        <div className={styles.navLinks} aria-label={t("Portfolio sections")}>
           <a
             href="#home"
             onClick={(event) => { event.preventDefault(); setCurrentSection(0); }}
             data-hand-target
-          >
-            Home
-          </a>
+          >{t("Home ")}</a>
           {homeCards.map((card) => (
             <a
               key={card.title}
@@ -306,20 +307,20 @@ function PortfolioContent() {
                 setCurrentSection(card.section);
               }}
             >
-              {card.title === "About Me" ? "About" : card.title}
+              {t(card.title === "About Me" ? "About" : card.title)}
             </a>
           ))}
         </div>
 
         <div className={styles.navActions}>
           <InputModeSelector variant="navbar" />
-          <ThemeSwitch theme={theme} onToggle={toggleTheme} />
+          <ThemeSwitch theme={theme} onToggle={toggleTheme} /><LanguageSwitch />
 
           <a
             className={styles.cvLink}
             href="#contact"
-            aria-label="Contact Elizabeth"
-            title="Contact"
+            aria-label={t("Contact Elizabeth")}
+            title={t("Contact")}
             data-hand-target
             data-hand-style="icon"
           >
@@ -350,7 +351,7 @@ function PortfolioContent() {
           <div className={styles.heroContent}>
 
             <p className={styles.eyebrow}>
-              <span>WELCOME</span>
+              <span>{t("WELCOME")}</span>
             </p>
 
 
@@ -361,17 +362,7 @@ function PortfolioContent() {
             </h1>
 
 
-            <p className={styles.specialties}>
-              COMPUTER SCIENCE RESEARCHER
-
-              <span>|</span>
-
-              OPTIMIZATION
-
-              <span>|</span>
-
-              CLOUD COMPUTING
-            </p>
+            <p className={styles.specialties}>{t("COMPUTER SCIENCE RESEARCHER ")}<span>|</span>{t("OPTIMIZATION ")}<span>|</span>{t("CLOUD COMPUTING ")}</p>
 
 
             <p className={styles.description}>
@@ -388,8 +379,8 @@ function PortfolioContent() {
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                title="LinkedIn"
+                aria-label={t("LinkedIn")}
+                title={t("LinkedIn")}
                 data-hand-target
                 data-hand-style="icon"
               >
@@ -413,8 +404,8 @@ function PortfolioContent() {
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="GitHub"
-                title="GitHub"
+                aria-label={t("GitHub")}
+                title={t("GitHub")}
                 data-hand-target
                 data-hand-style="icon"
               >
@@ -438,8 +429,7 @@ function PortfolioContent() {
                 href="#cv"
                 data-hand-target
                 data-hand-style="box"
-              >
-                Download CV <span aria-hidden="true">↓</span>
+              >{t("Download CV ")}<span aria-hidden="true">↓</span>
               </a>
 
             </div>
@@ -452,11 +442,9 @@ function PortfolioContent() {
                 href="https://orcid.org/0009-0006-1800-9996"
                 target="_blank"
                 rel="noopener noreferrer me"
-                aria-label="Elizabeth del Ángel Franco ORCID profile"
+                aria-label={t("Elizabeth del Ángel Franco ORCID profile")}
                 data-hand-target
-              >
-                ORCID 0009-0006-1800-9996
-              </a>
+              >{t("ORCID 0009-0006-1800-9996 ")}</a>
             </div>
 
           </div>
@@ -464,20 +452,16 @@ function PortfolioContent() {
 
           <div className={styles.visual} data-hero-visual>
             <div className={styles.orbCaption}>
-              <span>
-                SCIENTIFIC NETWORK
-              </span>
+              <span>{t("SCIENTIFIC NETWORK ")}</span>
 
-              <small>
-                PARTICLES + HAND TRACKING
-              </small>
+              <small>{t("PARTICLES + HAND TRACKING ")}</small>
             </div>
           </div>
 
           </div>
 
           <div className={styles.homeLower}>
-            <div className={styles.previewGrid} aria-label="Explore the portfolio">
+            <div className={styles.previewGrid} aria-label={t("Explore the portfolio")}>
               {homeCards.map((card, index) => (
                 <a
                   key={card.title}
@@ -497,9 +481,9 @@ function PortfolioContent() {
                   <svg className={styles.previewIcon} viewBox="0 0 24 24" aria-hidden="true">
                     <path d={card.icon} />
                   </svg>
-                  <h2>{card.title}</h2>
-                  <p>{card.description}</p>
-                  <span className={styles.previewLink}>Learn more <span aria-hidden="true">→</span></span>
+                  <h2>{t(card.title)}</h2>
+                  <p>{t(card.description)}</p>
+                  <span className={styles.previewLink}>{t("Learn more ")}<span aria-hidden="true">→</span></span>
                   <span className={styles.cardDecoration} aria-hidden="true" />
                 </a>
               ))}
@@ -509,22 +493,16 @@ function PortfolioContent() {
 
 
           <div className={styles.scrollIndicator}>
-            <span>
-              SWIPE TO EXPLORE
-            </span>
+            <span>{t("SWIPE TO EXPLORE ")}</span>
 
             <div className={styles.scrollLine} />
           </div>
 
-        <footer className={styles.quoteStrip} aria-label="Home quote">
+        <footer className={styles.quoteStrip} aria-label={t("Home quote")}>
           <span className={styles.quoteMark} aria-hidden="true">“</span>
-          <blockquote>
-            Efficiency is not just about speed. It is about making intelligent choices that create sustainable impact.
-          </blockquote>
+          <blockquote>{t("Efficiency is not just about speed. It is about making intelligent choices that create sustainable impact. ")}</blockquote>
           <div className={styles.signature}>
-            <span />
-            Elizabeth del Ángel Franco
-          </div>
+            <span />{t("Elizabeth del Ángel Franco ")}</div>
         </footer>
         </section>
 
@@ -941,7 +919,7 @@ function PortfolioContent() {
 export default function Home() {
   return (
     <InteractionProvider>
-      <ContentProvider><CertificateProvider><PortfolioContent /></CertificateProvider></ContentProvider>
+      <LanguageProvider><ContentProvider><CertificateProvider><PortfolioContent /></CertificateProvider></ContentProvider></LanguageProvider>
     </InteractionProvider>
   );
 }

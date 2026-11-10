@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useLanguage } from "./LanguageProvider";
 import { defaultContent } from "../../lib/content-defaults";
 import { contentConfigured, loadContent } from "../../lib/content-service";
 
@@ -19,4 +20,15 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   return <ContentContext.Provider value={content}>{children}</ContentContext.Provider>;
 }
 
-export const usePortfolioContent = () => useContext(ContentContext);
+const originalFields = new Set(["id", "title", "firstName", "lastName", "name", "journal", "event", "institution", "repository", "repositoryUrl", "github", "linkedin", "doi", "volume", "issue", "pages", "image"]);
+function localize<T>(value: T, t: (text: string) => string, field = ""): T {
+  if (typeof value === "string") return (originalFields.has(field) ? value : t(value)) as T;
+  if (Array.isArray(value)) return value.map(item => localize(item, t, field)) as T;
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, localize(item, t, key)])) as T;
+  return value;
+}
+export function usePortfolioContent() {
+  const content = useContext(ContentContext);
+  const { t } = useLanguage();
+  return useMemo(() => localize(content, t), [content, t]);
+}

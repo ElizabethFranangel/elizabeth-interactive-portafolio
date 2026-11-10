@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useLanguage } from "../content/LanguageProvider";
 
 const illustrations: Record<string, ReactNode> = {
   "Intelligent Optimization": <>
@@ -54,7 +55,8 @@ const illustrations: Record<string, ReactNode> = {
 };
 
 export default function ResearchAreaIllustration({ area, className }: { area: string; className: string }) {
-  return <svg className={className} viewBox="0 0 120 60" role="img" aria-label={`${area} illustration`}>
+  const { t } = useLanguage();
+  return <svg className={className} viewBox="0 0 120 60" role="img" aria-label={`${t(area)} · ${t("Illustration")}`}>
     {illustrations[area]}
   </svg>;
 }

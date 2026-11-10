@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { createPortal } from "react-dom";
 import { certificates, type Certificate } from "../../lib/certificates";
 import styles from "./CertificatePreview.module.css";
+import { useLanguage } from "./LanguageProvider";
 
 type Preview = { id: string; certificate: Certificate; x: number; y: number; theme: string };
 type Actions = { show: (id: string, target: HTMLElement) => void; leave: () => void; open: (id: string, target: HTMLElement) => void };
@@ -11,6 +12,7 @@ const CertificateContext = createContext<Actions | null>(null);
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export function CertificateProvider({ children }: { children: ReactNode }) {
+  const { t } = useLanguage();
   const [preview, setPreview] = useState<Preview | null>(null);
   const [selected, setSelected] = useState<{ certificate: Certificate; theme: string } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -68,10 +70,10 @@ export function CertificateProvider({ children }: { children: ReactNode }) {
 
   return <CertificateContext.Provider value={{ show, leave, open }}>
     {children}
-    {preview && createPortal(<aside className={`${styles.surface} ${styles.preview}`} data-theme={preview.theme} style={{ left: preview.x, top: preview.y }} onPointerEnter={cancel} onPointerDown={cancel} onPointerLeave={leave} onFocus={cancel} onBlur={leave} aria-label={`Certificate preview: ${preview.certificate.title}`}>
-      <button type="button" className={styles.thumbnail} aria-label={`Expand certificate: ${preview.certificate.title}`} aria-haspopup="dialog" onClick={event => open(preview.id, trigger.current || event.currentTarget)} data-hand-target data-hand-style="box">
+    {preview && createPortal(<aside className={`${styles.surface} ${styles.preview}`} data-theme={preview.theme} style={{ left: preview.x, top: preview.y }} onPointerEnter={cancel} onPointerDown={cancel} onPointerLeave={leave} onFocus={cancel} onBlur={leave} aria-label={t(`Certificate preview: ${preview.certificate.title}`)}>
+      <button type="button" className={styles.thumbnail} aria-label={t(`Expand certificate: ${preview.certificate.title}`)} aria-haspopup="dialog" onClick={event => open(preview.id, trigger.current || event.currentTarget)} data-hand-target data-hand-style="box">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={basePath + preview.certificate.image} alt={`Certificate: ${preview.certificate.title}`} draggable={false} />
+        <img src={basePath + preview.certificate.image} alt={t(`Certificate: ${preview.certificate.title}`)} draggable={false} />
       </button>
       <p>{preview.certificate.institution} · {preview.certificate.year}</p>
     </aside>, document.body)}
@@ -80,17 +82,18 @@ export function CertificateProvider({ children }: { children: ReactNode }) {
       const bounds = event.currentTarget.getBoundingClientRect();
       if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();
     }}>
-      <header><span>{selected.certificate.category} · {selected.certificate.year}</span></header>
+      <header><span>{t(selected.certificate.category)} · {selected.certificate.year}</span></header>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={basePath + selected.certificate.image} alt={`Original certificate: ${selected.certificate.title}`} />
+      <img src={basePath + selected.certificate.image} alt={t(`Original certificate: ${selected.certificate.title}`)} />
       <h2 id="certificate-dialog-title">{selected.certificate.title}</h2>
-      <p>{selected.certificate.institution}</p><p>{selected.certificate.date}</p>
+      <p>{selected.certificate.institution}</p><p>{t(selected.certificate.date)}</p>
     </dialog>, document.body)}
   </CertificateContext.Provider>;
 }
 
 export function CertificateTitle({ id, children }: { id: string; children: ReactNode }) {
+  const { t } = useLanguage();
   const actions = useContext(CertificateContext);
   if (!actions || !certificates[id]) return <>{children}</>;
-  return <button type="button" className={styles.title} aria-haspopup="dialog" aria-label={`View certificate: ${certificates[id].title}`} onPointerEnter={event => { if (event.pointerType !== "touch") actions.show(id, event.currentTarget); }} onPointerLeave={actions.leave} onFocus={event => actions.show(id, event.currentTarget)} onBlur={actions.leave} onClick={event => actions.open(id, event.currentTarget)} data-hand-target data-hand-style="text">{children}<span aria-hidden="true" className={styles.mark}> ↗</span></button>;
+  return <button type="button" className={styles.title} aria-haspopup="dialog" aria-label={t(`View certificate: ${certificates[id].title}`)} onPointerEnter={event => { if (event.pointerType !== "touch") actions.show(id, event.currentTarget); }} onPointerLeave={actions.leave} onFocus={event => actions.show(id, event.currentTarget)} onBlur={actions.leave} onClick={event => actions.open(id, event.currentTarget)} data-hand-target data-hand-style="text">{children}<span aria-hidden="true" className={styles.mark}> ↗</span></button>;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useLanguage } from "../content/LanguageProvider";
+
 import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "../../page.module.css";
 import transitions from "./SectionTransitions.module.css";
@@ -15,6 +17,7 @@ type PortfolioChaptersProps = {
 };
 
 export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps) {
+  const { t } = useLanguage();
   const { profile, publications, scientificPresentations, academicDevelopment, academicService, additionalTraining, researchNodes, researchPipeline, optimizationFamilies, workflowBenchmarks, projects, teachingInterests, academicActivities, teachingAreas } = usePortfolioContent();
   const [formStatus, setFormStatus] = useState("");
   const [activeResearchTab, setActiveResearchTab] = useState(0);
@@ -114,8 +117,8 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <div className={styles.chapterDecor} aria-hidden="true" />
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={styles.chapterHeader}>
-            <p className={styles.sectionEyebrow}>01 / About me</p>
-            <h2 className={styles.sectionTitle}>Research, technology and <span>purpose.</span></h2>
+            <p className={styles.sectionEyebrow}>{t("01 / About me")}</p>
+            <h2 className={styles.sectionTitle}>{t("Research, technology and ")}<span>{t("purpose.")}</span></h2>
           </header>
 
           <div className={styles.aboutEditorial}>
@@ -124,49 +127,49 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                 className={styles.aboutPortrait}
                 data-about-portrait
                 role="img"
-                aria-label="Elizabeth del Ángel Franco"
+                aria-label={t("Elizabeth del Ángel Franco")}
               />
 
               <div className={styles.aboutProfile}>
-                <p className={styles.microLabel}>Professional profile</p>
+                <p className={styles.microLabel}>{t("Professional profile")}</p>
                 <p>
                   {profile.bio}
                 </p>
                 <p>
                   {profile.background}
                 </p>
-                <div className={styles.keywordRow} aria-label="Professional areas">
-                  <span>Research</span><span>Software</span><span>Data</span><span>Teaching</span>
+                <div className={styles.keywordRow} aria-label={t("Professional areas")}>
+                  <span>{t("Research")}</span><span>{t("Software")}</span><span>{t("Data")}</span><span>{t("Teaching")}</span>
                 </div>
               </div>
             </div>
 
-            <div className={styles.academicPath} aria-label="Academic timeline">
-              <p className={styles.microLabel}>Academic timeline</p>
+            <div className={styles.academicPath} aria-label={t("Academic timeline")}>
+              <p className={styles.microLabel}>{t("Academic timeline")}</p>
               <ol>
                 <li>
-                  <time>2022 – Degree candidate</time>
-                  <strong>Doctorate in Computer Science</strong>
-                  <small>Instituto Tecnológico de Ciudad Madero</small>
-                  <em>Research line: intelligent optimization.</em>
+                  <time>{t("2022 – Degree candidate")}</time>
+                  <strong>{t("Doctorate in Computer Science")}</strong>
+                  <small>{t("Instituto Tecnológico de Ciudad Madero")}</small>
+                  <em>{t("Research line: intelligent optimization.")}</em>
                 </li>
                 <li>
                   <time>2018 – 2020</time>
-                  <strong>Master of Science in Computer Science</strong>
-                  <small>Instituto Tecnológico de Ciudad Madero</small>
-                  <em>Thesis: data acquisition and preprocessing module for a compensatory fuzzy logic scientific core.</em>
+                  <strong>{t("Master of Science in Computer Science")}</strong>
+                  <small>{t("Instituto Tecnológico de Ciudad Madero")}</small>
+                  <em>{t("Thesis: data acquisition and preprocessing module for a compensatory fuzzy logic scientific core.")}</em>
                 </li>
                 <li>
                   <time>2011 – 2017</time>
-                  <strong>Computer Systems Engineering</strong>
-                  <small>Instituto Tecnológico de Ciudad Madero</small>
-                  <em>Professional internship in the postgraduate studies department.</em>
+                  <strong>{t("Computer Systems Engineering")}</strong>
+                  <small>{t("Instituto Tecnológico de Ciudad Madero")}</small>
+                  <em>{t("Professional internship in the postgraduate studies department.")}</em>
                 </li>
                 <li>
                   <time>2006 – 2010</time>
-                  <strong>Programming Analyst Technician</strong>
-                  <small>Instituto de Ciencias y Estudios Superiores de Tamaulipas</small>
-                  <em>Graduation project: point-of-sale application development.</em>
+                  <strong>{t("Programming Analyst Technician")}</strong>
+                  <small>{t("Instituto de Ciencias y Estudios Superiores de Tamaulipas")}</small>
+                  <em>{t("Graduation project: point-of-sale application development.")}</em>
                 </li>
               </ol>
             </div>
@@ -178,30 +181,30 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <span className={styles.chapterNumber} aria-hidden="true">02</span>
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.researchContentHero}`}>
-            <p className={styles.sectionEyebrow}>02 / Research</p>
+            <p className={styles.sectionEyebrow}>{t("02 / Research")}</p>
           </header>
 
-          <div ref={researchNavigationRef} className={styles.publicationOverview} role="tablist" aria-label="Research subsections">
+          <div ref={researchNavigationRef} className={styles.publicationOverview} role="tablist" aria-label={t("Research subsections")}>
             {researchTabs.map((tab, index) => (
-              <button key={tab.label} type="button" role="tab" aria-selected={activeResearchTab === index} aria-controls={`research-panel-${index}`} className={activeResearchTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveResearchTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeResearchTab + researchTabs.length - 1) % researchTabs.length ? "" : undefined} data-hand-next={index === (activeResearchTab + 1) % researchTabs.length ? "" : undefined} data-hand-target data-hand-style="box"><strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span></button>
+              <button key={t(tab.label)} type="button" role="tab" aria-selected={activeResearchTab === index} aria-controls={`research-panel-${index}`} className={activeResearchTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveResearchTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeResearchTab + researchTabs.length - 1) % researchTabs.length ? "" : undefined} data-hand-next={index === (activeResearchTab + 1) % researchTabs.length ? "" : undefined} data-hand-target data-hand-style="box"><strong>{String(tab.count).padStart(2, "0")}</strong><span>{t(tab.label)}</span></button>
             ))}
           </div>
 
-          {activeResearchTab === 1 ? <div id="research-panel-1" role="tabpanel" aria-label="Research areas"><ResearchAreasGallery /></div> : <ViewportPager key={activeResearchTab}>
+          {activeResearchTab === 1 ? <div id="research-panel-1" role="tabpanel" aria-label={t("Research areas")}><ResearchAreasGallery /></div> : <ViewportPager key={activeResearchTab}>
           <div key={activeResearchTab} className={styles.researchTabPanel} id={`research-panel-${activeResearchTab}`} role="tabpanel">
           {activeResearchTab === 0 && <section className={styles.researchJourney} aria-labelledby="research-journey-title">
-            <p className={styles.microLabel} id="research-journey-title">Research journey</p>
+            <p className={styles.microLabel} id="research-journey-title">{t("Research journey")}</p>
             <div className={styles.researchJourneyGrid}>
-              <article><span className={styles.blockIndex}>01</span><p className={styles.microLabel}>Master&apos;s research</p><time>2018 – 2020</time><h3>Data Preprocessing</h3><p>Development of a data acquisition and preprocessing module for a scientific computing system, focusing on the preparation and transformation of data prior to subsequent analysis.</p></article>
+              <article><span className={styles.blockIndex}>01</span><p className={styles.microLabel}>{t("Master's research")}</p><time>2018 – 2020</time><h3>{t("Data Preprocessing")}</h3><p>{t("Development of a data acquisition and preprocessing module for a scientific computing system, focusing on the preparation and transformation of data prior to subsequent analysis.")}</p></article>
               <span className={styles.journeyArrow} aria-hidden="true">→</span>
-              <article><span className={styles.blockIndex}>02</span><p className={styles.microLabel}>Doctoral research</p><time>2022 – Present</time><h3>Intelligent Optimization in Cloud Environments</h3><p>Design and experimental evaluation of multi-objective metaheuristics for workflow scheduling and efficient allocation of computational resources in cloud computing environments.</p></article>
+              <article><span className={styles.blockIndex}>02</span><p className={styles.microLabel}>{t("Doctoral research")}</p><time>{t("2022 – Present")}</time><h3>{t("Intelligent Optimization in Cloud Environments")}</h3><p>{t("Design and experimental evaluation of multi-objective metaheuristics for workflow scheduling and efficient allocation of computational resources in cloud computing environments.")}</p></article>
             </div>
           </section>}
 
-          {activeResearchTab === 2 && <section><p className={styles.microLabel}>Certifications &amp; diplomas</p><ul className={styles.academicDevelopmentList}>
+          {activeResearchTab === 2 && <section><p className={styles.microLabel}>{t("Certifications & diplomas")}</p><ul className={styles.academicDevelopmentList}>
             {academicDevelopment.map((item, index) => <li key={item.id}><span>{entryNumber("AD", index)}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
-          {activeResearchTab === 3 && <section><p className={styles.microLabel}>Additional training · Entrepreneurship</p><ul className={styles.academicDevelopmentList}>
+          {activeResearchTab === 3 && <section><p className={styles.microLabel}>{t("Additional training · Entrepreneurship")}</p><ul className={styles.academicDevelopmentList}>
             {additionalTraining.map((item, index) => <li key={item.id}><span>{entryNumber("AT", index)}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           </div>
@@ -213,30 +216,30 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <span className={styles.chapterNumber} aria-hidden="true">03</span>
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.teachingHero}`}>
-            <p className={styles.sectionEyebrow}>03 / Teaching &amp; academic engagement</p>
+            <p className={styles.sectionEyebrow}>{t("03 / Teaching & academic engagement")}</p>
           </header>
 
-          <div ref={teachingNavigationRef} className={styles.publicationOverview} role="tablist" aria-label="Teaching subsections">
+          <div ref={teachingNavigationRef} className={styles.publicationOverview} role="tablist" aria-label={t("Teaching subsections")}>
             {[
               { label: "Teaching experience", count: 1 },
               { label: "Academic & scientific outreach", count: 2 },
               { label: "Participation & academic service", count: academicService.length },
             ].map((tab, index) => (
-              <button key={tab.label} type="button" role="tab" aria-selected={activeTeachingTab === index} aria-controls={`teaching-panel-${index}`} className={activeTeachingTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveTeachingTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeTeachingTab + 2) % 3 ? "" : undefined} data-hand-next={index === (activeTeachingTab + 1) % 3 ? "" : undefined} data-hand-target data-hand-style="box">
-                <strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span>
+              <button key={t(tab.label)} type="button" role="tab" aria-selected={activeTeachingTab === index} aria-controls={`teaching-panel-${index}`} className={activeTeachingTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveTeachingTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeTeachingTab + 2) % 3 ? "" : undefined} data-hand-next={index === (activeTeachingTab + 1) % 3 ? "" : undefined} data-hand-target data-hand-style="box">
+                <strong>{String(tab.count).padStart(2, "0")}</strong><span>{t(tab.label)}</span>
               </button>
             ))}
           </div>
 
           <ViewportPager key={activeTeachingTab}>
             <div key={activeTeachingTab} className={styles.teachingPanel} id={`teaching-panel-${activeTeachingTab}`} role="tabpanel">
-              {activeTeachingTab === 0 && <section><p className={styles.microLabel}>Teaching experience</p><article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>TE01</strong><time>2022</time><span>Adjunct Academic Support</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="TE01">Analysis and Design of Algorithms</CertificateTitle></h3><p className={styles.publicationAuthors}>Academic support within the Computer Systems Engineering program.</p><p className={styles.publicationJournal}>Tecnológico Nacional de México · Instituto Tecnológico de Ciudad Madero</p><p className={styles.publicationMeta}>Aug — Dec 2022</p><ul className={styles.publicationTags}><li>Algorithms</li><li>Computer Science</li><li>2022</li></ul></div></article></section>}
+              {activeTeachingTab === 0 && <section><p className={styles.microLabel}>{t("Teaching experience")}</p><article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{t("TE01")}</strong><time>2022</time><span>{t("Adjunct Academic Support")}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="TE01">{t("Analysis and Design of Algorithms")}</CertificateTitle></h3><p className={styles.publicationAuthors}>{t("Academic support within the Computer Systems Engineering program.")}</p><p className={styles.publicationJournal}>{t("Tecnológico Nacional de México · Instituto Tecnológico de Ciudad Madero")}</p><p className={styles.publicationMeta}>{t("Aug — Dec 2022")}</p><ul className={styles.publicationTags}><li>{t("Algorithms")}</li><li>{t("Computer Science")}</li><li>2022</li></ul></div></article></section>}
 
-              {activeTeachingTab === 1 && <section><p className={styles.microLabel}>Academic &amp; scientific outreach</p><div className={styles.publicationArchive}>
-                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>01</strong><time>2024</time><span>Workshop</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT01">Applications of Artificial Intelligence</CertificateTitle></h3><p className={styles.publicationJournal}>International Day of Women and Girls in Science</p><p className={styles.publicationMeta}>Ciudad Madero, Tamaulipas</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
-                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>02</strong><time>2023</time><span>Scientific Outreach Talk</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT02">A walk through the paths of Artificial Intelligence</CertificateTitle></h3><p className={styles.publicationAuthors}>Introductory scientific outreach on artificial intelligence for student audiences.</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
+              {activeTeachingTab === 1 && <section><p className={styles.microLabel}>{t("Academic & scientific outreach")}</p><div className={styles.publicationArchive}>
+                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>01</strong><time>2024</time><span>{t("Workshop")}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT01">{t("Applications of Artificial Intelligence")}</CertificateTitle></h3><p className={styles.publicationJournal}>{t("International Day of Women and Girls in Science")}</p><p className={styles.publicationMeta}>{t("Ciudad Madero, Tamaulipas")}</p><ul className={styles.publicationTags}><li>{t("Verified activity")}</li></ul></div></article>
+                <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>02</strong><time>2023</time><span>{t("Scientific Outreach Talk")}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT02">{t("A walk through the paths of Artificial Intelligence")}</CertificateTitle></h3><p className={styles.publicationAuthors}>{t("Introductory scientific outreach on artificial intelligence for student audiences.")}</p><ul className={styles.publicationTags}><li>{t("Verified activity")}</li></ul></div></article>
               </div></section>}
-              {activeTeachingTab === 2 && <section><p className={styles.microLabel}>Participation &amp; academic service</p><div className={styles.publicationArchive}>
+              {activeTeachingTab === 2 && <section><p className={styles.microLabel}>{t("Participation & academic service")}</p><div className={styles.publicationArchive}>
                 {academicService.map((item, index) => <article key={item.id} className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{entryNumber("AS", index)}</strong><time>{item.year}</time><span>{item.type}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p className={styles.publicationAuthors}>{item.description}</p><p className={styles.publicationJournal}>{item.institution}</p><p className={styles.publicationMeta}>{item.date}</p></div></article>)}
               </div></section>}
             </div>
@@ -248,14 +251,14 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <span className={styles.chapterNumber} aria-hidden="true">04</span>
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.publicationsHero}`}>
-            <p className={styles.sectionEyebrow}>04 / Publications</p>
+            <p className={styles.sectionEyebrow}>{t("04 / Publications")}</p>
           </header>
 
           <div className={styles.publicationNavigation}>
-            <div ref={publicationNavigationRef} className={styles.publicationOverview} role="tablist" aria-label="Publication subsections">
+            <div ref={publicationNavigationRef} className={styles.publicationOverview} role="tablist" aria-label={t("Publication subsections")}>
               {publicationTabs.map((tab, index) => (
                 <button
-                  key={tab.label}
+                  key={t(tab.label)}
                   type="button"
                   role="tab"
                   aria-selected={activePublicationTab === index}
@@ -272,7 +275,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   data-hand-style="box"
                 >
                   <strong>{String(tab.count).padStart(2, "0")}</strong>
-                  <span>{tab.label}</span>
+                  <span>{t(tab.label)}</span>
                 </button>
               ))}
             </div>
@@ -282,11 +285,11 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
           <div key={activePublicationTab} className={styles.publicationsEditorial} id={`publication-panel-${activePublicationTab}`} role="tabpanel" aria-labelledby={`publication-tab-${activePublicationTab}`}>
             {activePublicationTab === 0 && (
             <section className={styles.peerReviewed} aria-labelledby="peer-reviewed-title">
-              <p className={styles.microLabel} id="peer-reviewed-title">Journal Article</p>
+              <p className={styles.microLabel} id="peer-reviewed-title">{t("Journal Article")}</p>
               <div className={styles.publicationArchive}>
                 {publications.map((publication, index) => (
                   <article key={publication.id} className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>{entryNumber("J", index)}</strong><time>{publication.year}</time><span>Featured publication</span></div>
+                    <div className={styles.publicationIndex}><strong>{entryNumber("J", index)}</strong><time>{publication.year}</time><span>{t("Featured publication")}</span></div>
                     <div className={styles.publicationRecord}>
                       <h3>{publication.title}</h3>
                       <p className={styles.publicationAuthors} aria-label={`Authors: ${publication.authors.map((author) => author.name).join(", ")}`}>
@@ -297,10 +300,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                         ))}
                       </p>
                       <p className={styles.publicationJournal}>{publication.journal}</p>
-                      <p className={styles.publicationMeta}>Vol. {publication.volume} · No. {publication.issue} · pp. {publication.pages} · {publication.year}</p>
+                      <p className={styles.publicationMeta}>{t("Vol. ")}{publication.volume}{t("· No. ")}{publication.issue}{t("· pp. ")}{publication.pages} · {publication.year}</p>
                       <code>{publication.doi}</code>
                       <ul>{publication.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
-                      <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer" data-hand-target data-hand-style="box" aria-label={`Open DOI for ${publication.title}`}>DOI <span aria-hidden="true">↗</span></a>
+                      <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer" data-hand-target data-hand-style="box" aria-label={`Open DOI for ${publication.title}`}>{t("DOI ")}<span aria-hidden="true">↗</span></a>
                     </div>
                   </article>
                 ))}
@@ -310,16 +313,16 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
             {activePublicationTab === 1 && (
             <section className={styles.peerReviewed}>
-              <p className={styles.microLabel}>Book Chapters</p>
+              <p className={styles.microLabel}>{t("Book Chapters")}</p>
               <div className={styles.publicationArchive}>
                 <article className={styles.publicationEntry}>
-                  <div className={styles.publicationIndex}><strong>BC01</strong><time>—</time><span>Book chapter</span></div>
+                  <div className={styles.publicationIndex}><strong>{t("BC01")}</strong><time>—</time><span>{t("Book chapter")}</span></div>
                   <div className={styles.publicationRecord}>
-                    <h3>Book chapter details forthcoming</h3>
-                    <p className={styles.publicationAuthors}>Author information will be added.</p>
-                    <p className={styles.publicationJournal}>Book and publisher information forthcoming</p>
-                    <p className={styles.publicationMeta}>Publication metadata will be added when available.</p>
-                    <ul><li>Book Chapter</li></ul>
+                    <h3>{t("Book chapter details forthcoming")}</h3>
+                    <p className={styles.publicationAuthors}>{t("Author information will be added.")}</p>
+                    <p className={styles.publicationJournal}>{t("Book and publisher information forthcoming")}</p>
+                    <p className={styles.publicationMeta}>{t("Publication metadata will be added when available.")}</p>
+                    <ul><li>{t("Book Chapter")}</li></ul>
                   </div>
                 </article>
               </div>
@@ -328,16 +331,16 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
             {activePublicationTab === 2 && (
               <section className={styles.peerReviewed}>
-                <p className={styles.microLabel}>Books</p>
+                <p className={styles.microLabel}>{t("Books")}</p>
                 <div className={styles.publicationArchive}>
                   <article className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>B01</strong><time>—</time><span>Book</span></div>
+                    <div className={styles.publicationIndex}><strong>B01</strong><time>—</time><span>{t("Book")}</span></div>
                     <div className={styles.publicationRecord}>
-                      <h3>Book details forthcoming</h3>
-                      <p className={styles.publicationAuthors}>Author information will be added.</p>
-                      <p className={styles.publicationJournal}>Publisher information forthcoming</p>
-                      <p className={styles.publicationMeta}>Publication metadata will be added when available.</p>
-                      <ul><li>Book</li></ul>
+                      <h3>{t("Book details forthcoming")}</h3>
+                      <p className={styles.publicationAuthors}>{t("Author information will be added.")}</p>
+                      <p className={styles.publicationJournal}>{t("Publisher information forthcoming")}</p>
+                      <p className={styles.publicationMeta}>{t("Publication metadata will be added when available.")}</p>
+                      <ul><li>{t("Book")}</li></ul>
                     </div>
                   </article>
                 </div>
@@ -346,18 +349,17 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
             {activePublicationTab === 3 && (
               <section className={styles.peerReviewed}>
-                <p className={styles.microLabel}>Under review</p>
+                <p className={styles.microLabel}>{t("Under review")}</p>
                 <div className={styles.publicationArchive}>
                   <article className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>UR01</strong><time>2026</time><span>Under review</span></div>
+                    <div className={styles.publicationIndex}><strong>{t("UR01")}</strong><time>2026</time><span>{t("Under review")}</span></div>
                     <div className={styles.publicationRecord}>
-                      <h3>Ablation Study Based on a Factorial Analysis of the Workflow Scheduling Problem</h3>
+                      <h3>{t("Ablation Study Based on a Factorial Analysis of the Workflow Scheduling Problem")}</h3>
                       <p className={styles.publicationAuthors}>
-                        <span className={styles.featuredAuthor}>Elizabeth Del-Angel-Franco</span>; Claudia Guadalupe Gómez-Santillán; Laura Cruz-Reyes; Nelson Rangel-Valdez; and Gilberto Rivera-Zarate
-                      </p>
-                      <p className={styles.publicationJournal}><strong>Under review in</strong> Computación y Sistemas</p>
-                      <p className={styles.publicationMeta}><strong>2026</strong> · JCR · IF = 0.8 in 2025–2026</p>
-                      <ul><li>Under Review</li><li>Workflow Scheduling</li><li>Factorial Analysis</li></ul>
+                        <span className={styles.featuredAuthor}>{t("Elizabeth Del-Angel-Franco")}</span>{t("; Claudia Guadalupe Gómez-Santillán; Laura Cruz-Reyes; Nelson Rangel-Valdez; and Gilberto Rivera-Zarate ")}</p>
+                      <p className={styles.publicationJournal}><strong>{t("Under review in")}</strong>{t("Computación y Sistemas")}</p>
+                      <p className={styles.publicationMeta}><strong>2026</strong>{t("· JCR · IF = 0.8 in 2025–2026")}</p>
+                      <ul><li>{t("Under Review")}</li><li>{t("Workflow Scheduling")}</li><li>{t("Factorial Analysis")}</li></ul>
                     </div>
                   </article>
                 </div>
@@ -366,7 +368,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
             {activePublicationTab === 4 && (
             <section className={styles.presentationsSection} aria-labelledby="presentations-title">
-              <p className={styles.microLabel} id="presentations-title">Scientific presentations</p>
+              <p className={styles.microLabel} id="presentations-title">{t("Scientific presentations")}</p>
               <div className={styles.publicationArchive}>
                 {scientificPresentations.map((presentation, index) => (
                   <article key={presentation.id} className={styles.publicationEntry}>
@@ -375,7 +377,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                       <h3><CertificateTitle id={presentation.id}>{presentation.title}</CertificateTitle></h3>
                       <p className={styles.publicationJournal}>{presentation.event}</p>
                       <p className={styles.publicationMeta}>{presentation.month}</p>
-                      <ul><li>Presentation</li></ul>
+                      <ul><li>{t("Presentation")}</li></ul>
                     </div>
                   </article>
                 ))}
@@ -391,11 +393,11 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <span className={styles.chapterNumber} aria-hidden="true">05</span>
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <header className={`${styles.chapterHeader} ${styles.projectsHero}`}>
-            <p className={styles.sectionEyebrow}>05 / Projects</p>
+            <p className={styles.sectionEyebrow}>{t("05 / Projects")}</p>
           </header>
 
-          <div ref={projectNavigationRef} className={styles.projectOverview} role="tablist" aria-label="Project subsections">
-            {[<>Research &amp;<br />Algorithms</>, <>Software &amp;<br />Systems</>].map((label, index) => (
+          <div ref={projectNavigationRef} className={styles.projectOverview} role="tablist" aria-label={t("Project subsections")}>
+            {[<>{t("Research &")}<br />{t("Algorithms")}</>, <>{t("Software &")}<br />{t("Systems")}</>].map((label, index) => (
               <button
                 key={index}
                 type="button"
@@ -419,7 +421,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
           <ViewportPager key={activeProjectTab}>
           <section key={activeProjectTab} className={styles.selectedProjects} id={`project-panel-${activeProjectTab}`} role="tabpanel" aria-labelledby="selected-projects-title">
-            <p className={styles.microLabel} id="selected-projects-title">{activeProjectTab === 0 ? "Research & Algorithms" : "Software & Systems"}</p>
+            <p className={styles.microLabel} id="selected-projects-title">{t(activeProjectTab === 0 ? "Research & Algorithms" : "Software & Systems")}</p>
             {activeProjectTab === 0 && projects.map((project, index) => (
               <article key={project.id} className={styles.projectEntry}>
                 <aside className={styles.projectIdentity}>
@@ -429,68 +431,68 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   <div className={styles.projectHeading}>
                     <h3>{project.title}</h3>
                     <div className={styles.projectActions}>
-                      {project.repositoryAvailable ? <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" data-hand-target data-hand-style="box">View repository <span aria-hidden="true">↗</span></a> : <span>Repository forthcoming</span>}
+                      {project.repositoryAvailable ? <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" data-hand-target data-hand-style="box">{t("View repository ")}<span aria-hidden="true">↗</span></a> : <span>{t("Repository forthcoming")}</span>}
                     </div>
                   </div>
                   <p className={styles.projectSubtitle}>{project.subtitle}</p>
                   <p>{project.description}</p>
-                  {project.id === "P01" && <p>The repository provides the implementation used in the published study and supports reproducibility of the experimental scheduling setup.</p>}
+                  {project.id === "P01" && <p>{t("The repository provides the implementation used in the published study and supports reproducibility of the experimental scheduling setup.")}</p>}
 
-                  <div className={styles.projectTopics}><span>Related research</span><ul>{project.topics.map((topic) => <li key={topic}>{topic}</li>)}</ul></div>
+                  <div className={styles.projectTopics}><span>{t("Related research")}</span><ul>{project.topics.map((topic) => <li key={topic}>{topic}</li>)}</ul></div>
 
                   {project.id === "P01" ? (
-                    <div className={styles.schedulingDiagram} aria-label="Conceptual task scheduling diagram">
-                      <div><span>T1</span><span>T2</span><span>T3</span><span>T4</span></div><strong>Scheduler</strong><div><span>VM1</span><span>VM2</span><span>VM3</span></div>
+                    <div className={styles.schedulingDiagram} aria-label={t("Conceptual task scheduling diagram")}>
+                      <div><span>T1</span><span>T2</span><span>T3</span><span>T4</span></div><strong>{t("Scheduler")}</strong><div><span>{t("VM1")}</span><span>{t("VM2")}</span><span>{t("VM3")}</span></div>
                     </div>
                   ) : (
-                    <div className={styles.metaheuristicFlow} aria-label="Ongoing research flow"><span>Workflow</span><i>→</i><span>Metaheuristic research</span><i>→</i><span>Candidate schedules</span><i>→</i><span>Evaluation</span></div>
+                    <div className={styles.metaheuristicFlow} aria-label={t("Ongoing research flow")}><span>{t("Workflow")}</span><i>→</i><span>{t("Metaheuristic research")}</span><i>→</i><span>{t("Candidate schedules")}</span><i>→</i><span>{t("Evaluation")}</span></div>
                   )}
 
                 </div>
 
                 <aside className={styles.projectTechnical}>
-                  <p className={styles.microLabel}>Technical summary</p>
+                  <p className={styles.microLabel}>{t("Technical summary")}</p>
                   {project.id === "P01" ? (
                     <div className={styles.projectTechnicalGrid}>
-                      <dl><div><dt>Problem</dt><dd>Scientific workflow scheduling</dd></div><div><dt>Objective</dt><dd>Makespan minimization</dd></div><div><dt>Environment</dt><dd>WorkflowSim 1.0</dd></div><div><dt>Language</dt><dd>Java</dd></div><div><dt>Simulation</dt><dd>CloudSim</dd></div><div><dt>Status</dt><dd>Published Research</dd></div></dl>
+                      <dl><div><dt>{t("Problem")}</dt><dd>{t("Scientific workflow scheduling")}</dd></div><div><dt>{t("Objective")}</dt><dd>{t("Makespan minimization")}</dd></div><div><dt>{t("Environment")}</dt><dd>{t("WorkflowSim 1.0")}</dd></div><div><dt>{t("Language")}</dt><dd>{t("Java")}</dd></div><div><dt>{t("Simulation")}</dt><dd>{t("CloudSim")}</dd></div><div><dt>{t("Status")}</dt><dd>{t("Published Research")}</dd></div></dl>
                       <div className={styles.projectTechnicalDetails}>
-                        <div className={styles.workflowBenchmarks}><span>Workflow benchmarks</span><ul>{["Montage", "CyberShake", "Inspiral", "SIPHT", "Epigenomics"].map((workflow) => <li key={workflow}>{workflow}</li>)}</ul></div>
-                        <div className={styles.reproducibility}><strong>Reproducible research</strong><p>The repository contains the scheduling implementation and workflow resources required to reproduce the experimental setup used in the associated study.</p></div>
-                        <div className={styles.projectPublication}><span>Project → Publication</span><strong>Experimental Study of Optimization Algorithms for Resource Allocation in Cloud Computing</strong><small>IJCOPI · 2025 · 16(4), 399–415</small><code>10.61467/2007.1558.2025.v16i4.983</code></div>
+                        <div className={styles.workflowBenchmarks}><span>{t("Workflow benchmarks")}</span><ul>{["Montage", "CyberShake", "Inspiral", "SIPHT", "Epigenomics"].map((workflow) => <li key={workflow}>{workflow}</li>)}</ul></div>
+                        <div className={styles.reproducibility}><strong>{t("Reproducible research")}</strong><p>{t("The repository contains the scheduling implementation and workflow resources required to reproduce the experimental setup used in the associated study.")}</p></div>
+                        <div className={styles.projectPublication}><span>{t("Project → Publication")}</span><strong>{t("Experimental Study of Optimization Algorithms for Resource Allocation in Cloud Computing")}</strong><small>{t("IJCOPI · 2025 · 16(4), 399–415")}</small><code>10.61467/2007.1558.2025.v16i4.983</code></div>
                       </div>
                     </div>
                   ) : (
-                    <><p className={styles.repositoryName}>{project.repository}</p><div className={styles.projectPath}><span>Research Software</span><i>↓</i><span>Experimental Study</span><i>↓</i><span>Ongoing Research</span></div></>
+                    <><p className={styles.repositoryName}>{project.repository}</p><div className={styles.projectPath}><span>{t("Research Software")}</span><i>↓</i><span>{t("Experimental Study")}</span><i>↓</i><span>{t("Ongoing Research")}</span></div></>
                   )}
-                  {project.technologies.length > 0 && <p className={styles.projectTechLine}>Tech / {project.technologies.join(" · ")}</p>}
+                  {project.technologies.length > 0 && <p className={styles.projectTechLine}>{t("Tech / ")}{project.technologies.join(" · ")}</p>}
                 </aside>
               </article>
             ))}
 
             {activeProjectTab === 1 && <>
               <article className={`${styles.projectEntry} ${styles.softwareProjectEntry}`}>
-                <aside className={styles.projectIdentity}><strong>S01</strong><span>Interactive Web Application</span><em>Personal Project</em></aside>
+                <aside className={styles.projectIdentity}><strong>S01</strong><span>{t("Interactive Web Application")}</span><em>{t("Personal Project")}</em></aside>
                 <div className={styles.projectBody}>
-                  <div className={styles.projectHeading}><h3>Interactive Academic Portfolio</h3></div>
-                  <p className={styles.projectSubtitle}>Interactive Web Application · Personal Project</p>
-                  <p>Diseño y desarrollo de un portafolio web académico interactivo para presentar experiencia profesional, investigación, publicaciones y proyectos de software. La plataforma combina una interfaz responsiva con elementos de interacción visual y navegación mediante mouse y reconocimiento de gestos de mano, buscando una experiencia de usuario más dinámica que la de un CV web convencional.</p>
-                  <p>El proyecto integra una arquitectura basada en componentes reutilizables, modos claro y oscuro, diseño adaptable a diferentes resoluciones y elementos gráficos interactivos orientados a mantener una identidad visual académica y tecnológica.</p>
-                  <div className={styles.projectTopics}><span>Key features</span><ul>{["Responsive interface", "Gesture-based interaction", "Mouse navigation", "Light / dark mode", "Interactive visual components", "Modular content sections"].map((feature) => <li key={feature}>{feature}</li>)}</ul></div>
+                  <div className={styles.projectHeading}><h3>{t("Interactive Academic Portfolio")}</h3></div>
+                  <p className={styles.projectSubtitle}>{t("Interactive Web Application · Personal Project")}</p>
+                  <p>{t("Diseño y desarrollo de un portafolio web académico interactivo para presentar experiencia profesional, investigación, publicaciones y proyectos de software. La plataforma combina una interfaz responsiva con elementos de interacción visual y navegación mediante mouse y reconocimiento de gestos de mano, buscando una experiencia de usuario más dinámica que la de un CV web convencional.")}</p>
+                  <p>{t("El proyecto integra una arquitectura basada en componentes reutilizables, modos claro y oscuro, diseño adaptable a diferentes resoluciones y elementos gráficos interactivos orientados a mantener una identidad visual académica y tecnológica.")}</p>
+                  <div className={styles.projectTopics}><span>{t("Key features")}</span><ul>{["Responsive interface", "Gesture-based interaction", "Mouse navigation", "Light / dark mode", "Interactive visual components", "Modular content sections"].map((feature) => <li key={t(feature)}>{t(feature)}</li>)}</ul></div>
                 </div>
-                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>Project evidence</p><figure><img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/interactive-academic-portfolio-evidence.png`} alt="Home screen of the Interactive Academic Portfolio" /><figcaption>Interactive Academic Portfolio · Home interface</figcaption></figure></aside>
+                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>{t("Project evidence")}</p><figure><img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/interactive-academic-portfolio-evidence.png`} alt={t("Home screen of the Interactive Academic Portfolio")} /><figcaption>{t("Interactive Academic Portfolio · Home interface")}</figcaption></figure></aside>
               </article>
 
               <article className={`${styles.projectEntry} ${styles.softwareProjectEntry}`}>
-                <aside className={styles.projectIdentity}><strong>S02</strong><span>Desktop Management System</span><em>Client Project</em></aside>
+                <aside className={styles.projectIdentity}><strong>S02</strong><span>{t("Desktop Management System")}</span><em>{t("Client Project")}</em></aside>
                 <div className={styles.projectBody}>
-                  <div className={styles.projectHeading}><h3>Gym Management &amp; Point-of-Sale System</h3></div>
-                  <p className={styles.projectSubtitle}>Desktop Management System · Client Project</p>
-                  <p>Diseño y desarrollo de un sistema de escritorio para la gestión operativa de un gimnasio, orientado a centralizar el registro de clientes, mensualidades, pagos y operaciones de punto de venta en una única aplicación.</p>
-                  <p>El sistema contempla la administración del estado de las membresías, historial de pagos, métodos de pago, fechas de vencimiento y consultas administrativas, además del registro de productos y ventas realizadas dentro del gimnasio. Su diseño está enfocado en simplificar las actividades cotidianas de recepción y proporcionar al negocio un control estructurado de su información.</p>
-                  <p>Desarrollado bajo una arquitectura de aplicación de escritorio utilizando JavaFX y PostgreSQL, con posibilidad de incorporar nuevos módulos conforme evolucionen las necesidades operativas del gimnasio.</p>
-                  <div className={styles.projectTopics}><span>Key features</span><ul>{["Client management", "Membership tracking", "Payment records", "Expiration control", "Point of sale", "Product management", "Administrative queries"].map((feature) => <li key={feature}>{feature}</li>)}</ul></div>
+                  <div className={styles.projectHeading}><h3>{t("Gym Management & Point-of-Sale System")}</h3></div>
+                  <p className={styles.projectSubtitle}>{t("Desktop Management System · Client Project")}</p>
+                  <p>{t("Diseño y desarrollo de un sistema de escritorio para la gestión operativa de un gimnasio, orientado a centralizar el registro de clientes, mensualidades, pagos y operaciones de punto de venta en una única aplicación.")}</p>
+                  <p>{t("El sistema contempla la administración del estado de las membresías, historial de pagos, métodos de pago, fechas de vencimiento y consultas administrativas, además del registro de productos y ventas realizadas dentro del gimnasio. Su diseño está enfocado en simplificar las actividades cotidianas de recepción y proporcionar al negocio un control estructurado de su información.")}</p>
+                  <p>{t("Desarrollado bajo una arquitectura de aplicación de escritorio utilizando JavaFX y PostgreSQL, con posibilidad de incorporar nuevos módulos conforme evolucionen las necesidades operativas del gimnasio.")}</p>
+                  <div className={styles.projectTopics}><span>{t("Key features")}</span><ul>{["Client management", "Membership tracking", "Payment records", "Expiration control", "Point of sale", "Product management", "Administrative queries"].map((feature) => <li key={t(feature)}>{t(feature)}</li>)}</ul></div>
                 </div>
-                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>Project evidence</p><div className={styles.evidencePending}><span>Image forthcoming</span><small>Gym Management &amp; Point-of-Sale System</small></div></aside>
+                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>{t("Project evidence")}</p><div className={styles.evidencePending}><span>{t("Image forthcoming")}</span><small>{t("Gym Management & Point-of-Sale System")}</small></div></aside>
               </article>
             </>}
           </section>
@@ -503,30 +505,30 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         <div className={`${styles.chapterInner} ${transitions.content}`}>
           <div className={styles.contactEditorial}>
             <div>
-              <p className={styles.sectionEyebrow}>06 / Contact</p>
-              <h2 className={styles.sectionTitle}>Let&apos;s <span>connect.</span></h2>
+              <p className={styles.sectionEyebrow}>{t("06 / Contact")}</p>
+              <h2 className={styles.sectionTitle}>{t("Let's ")}<span>{t("connect.")}</span></h2>
               <p className={styles.chapterIntro}>{profile.contact}</p>
               <div className={styles.contactLinks}>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" data-hand-target>LinkedIn <span>↗</span></a>
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" data-hand-target>GitHub <span>↗</span></a>
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" data-hand-target>{t("LinkedIn ")}<span>↗</span></a>
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" data-hand-target>{t("GitHub ")}<span>↗</span></a>
               </div>
             </div>
 
             <form className={styles.contactForm} onSubmit={handleSubmit}>
-              <label>Name<input name="name" autoComplete="name" required /></label>
-              <label>Email<input name="email" type="email" autoComplete="email" required /></label>
-              <label>Subject<input name="subject" required /></label>
-              <label>Message<textarea name="message" rows={4} required /></label>
-              <button type="submit" data-hand-target data-hand-style="box">Send message <span>→</span></button>
-              <p className={styles.formStatus} role="status" aria-live="polite">{formStatus}</p>
+              <label>{t("Name")}<input name="name" autoComplete="name" required /></label>
+              <label>{t("Email")}<input name="email" type="email" autoComplete="email" required /></label>
+              <label>{t("Subject")}<input name="subject" required /></label>
+              <label>{t("Message")}<textarea name="message" rows={4} required /></label>
+              <button type="submit" data-hand-target data-hand-style="box">{t("Send message ")}<span>→</span></button>
+              <p className={styles.formStatus} role="status" aria-live="polite">{t(formStatus)}</p>
             </form>
           </div>
         </div>
         <footer className={styles.footer}>
-          <span>Elizabeth del Ángel Franco</span>
-          <span>© 2026 · Computer Science Researcher</span>
-          <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/`} data-hand-target>Administrar · Iniciar sesión</a>
-          <button type="button" onClick={() => onNavigate(0)} data-hand-target>Back to top ↑</button>
+          <span>{t("Elizabeth del Ángel Franco")}</span>
+          <span>{t("© 2026 · Computer Science Researcher")}</span>
+          <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/`} data-hand-target>{t("Administrar · Iniciar sesión")}</a>
+          <button type="button" onClick={() => onNavigate(0)} data-hand-target>{t("Back to top ↑")}</button>
         </footer>
       </section>
     </>

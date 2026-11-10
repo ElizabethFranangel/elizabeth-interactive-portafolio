@@ -1,5 +1,7 @@
 "use client";
 
+import { useLanguage } from "../content/LanguageProvider";
+
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useInteraction } from "../Interaction/InteractionContext";
 import styles from "./ResearchAreasGallery.module.css";
@@ -17,6 +19,7 @@ const areas = [
 ];
 
 export default function ResearchAreasGallery() {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   const { inputMode, pointerRef, handTrackingEnabled, gestureStateRef } = useInteraction();
@@ -75,7 +78,7 @@ export default function ResearchAreasGallery() {
     return () => window.clearInterval(timer);
   }, [playing, inputMode, pointerRef, handTrackingEnabled, gestureStateRef]);
 
-  return <section ref={galleryRoot} className={styles.gallery} aria-label="Research areas" aria-roledescription="carousel"
+  return <section ref={galleryRoot} className={styles.gallery} aria-label={t("Research areas")} aria-roledescription="carousel"
     onPointerMove={event => { if (event.pointerType !== "touch") mouse.current = { x: event.clientX, y: event.clientY }; }}
     onPointerLeave={() => { mouse.current = null; }}
     onKeyDown={event => {
@@ -83,7 +86,7 @@ export default function ResearchAreasGallery() {
       event.preventDefault(); event.stopPropagation();
       handleMove(event.key === "ArrowRight" ? 1 : -1);
     }}>
-    <p className={styles.eyebrow}>Research areas</p>
+    <p className={styles.eyebrow}>{t("Research areas")}</p>
     <div ref={stage} className={styles.stage}
       onTouchStart={event => { touchStart.current = event.touches[0].clientX; }}
       onTouchEnd={event => {
@@ -97,24 +100,24 @@ export default function ResearchAreasGallery() {
         const visible = Math.abs(offset) <= 2;
         return <button key={title} type="button" className={styles.card}
           style={{ "--offset": offset, "--distance": Math.abs(offset), zIndex: 5 - Math.abs(offset) } as CSSProperties}
-          aria-label={title} aria-pressed={index === active} aria-hidden={!visible}
+          aria-label={t(title)} aria-pressed={index === active} aria-hidden={!visible}
           tabIndex={visible ? 0 : -1} onClick={() => handleSelect(index)}
           data-hand-target={visible ? "" : undefined} data-hand-style="box">
           <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
           <ResearchAreaIllustration area={title} className={styles.symbol} />
-          <h3>{title}</h3>
-          <p>{description}</p>
+          <h3>{t(title)}</h3>
+          <p>{t(description)}</p>
         </button>;
       })}
     </div>
     <div className={styles.controls}>
-      <button type="button" aria-label="Previous research area" onClick={() => handleMove(-1)} data-hand-target data-hand-prev data-hand-style="box">‹</button>
-      <span role="status" aria-live={playing ? "off" : "polite"} aria-atomic="true">{String(active + 1).padStart(2, "0")} <span>/ {String(areas.length).padStart(2, "0")}</span><span className={styles.srOnly}> · {areas[active][0]}</span></span>
-      <button type="button" aria-label="Next research area" onClick={() => handleMove(1)} data-hand-target data-hand-next data-hand-style="box">›</button>
-      <button type="button" aria-label={playing ? "Pause automatic gallery" : "Play automatic gallery"} aria-pressed={playing} onClick={() => setPlaying(current => !current)} data-hand-target data-hand-style="box">{playing ? "Ⅱ" : "▷"}</button>
+      <button type="button" aria-label={t("Previous research area")} onClick={() => handleMove(-1)} data-hand-target data-hand-prev data-hand-style="box">‹</button>
+      <span role="status" aria-live={playing ? "off" : "polite"} aria-atomic="true">{String(active + 1).padStart(2, "0")} <span>/ {String(areas.length).padStart(2, "0")}</span><span className={styles.srOnly}> · {t(areas[active][0])}</span></span>
+      <button type="button" aria-label={t("Next research area")} onClick={() => handleMove(1)} data-hand-target data-hand-next data-hand-style="box">›</button>
+      <button type="button" aria-label={t(playing ? "Pause automatic gallery" : "Play automatic gallery")} aria-pressed={playing} onClick={() => setPlaying(current => !current)} data-hand-target data-hand-style="box">{playing ? "Ⅱ" : "▷"}</button>
     </div>
-    <div className={styles.dots} aria-label="Choose a research area">
-      {areas.map(([title], index) => <button key={title} type="button" aria-label={`Go to ${title}`} aria-current={index === active ? "true" : undefined} onClick={() => handleSelect(index)} />)}
+    <div className={styles.dots} aria-label={t("Choose a research area")}>
+      {areas.map(([title], index) => <button key={title} type="button" aria-label={t(`Go to ${title}`)} aria-current={index === active ? "true" : undefined} onClick={() => handleSelect(index)} />)}
     </div>
   </section>;
 }

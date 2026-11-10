@@ -1,5 +1,7 @@
 "use client";
 
+import { useLanguage } from "../content/LanguageProvider";
+
 import {
   useInteraction,
 } from "./InteractionContext";
@@ -9,6 +11,7 @@ export default function InputModeSelector({
 }: {
   variant?: "home" | "navbar";
 }) {
+  const { t } = useLanguage();
   const {
     inputMode,
     setInputMode,
@@ -29,31 +32,29 @@ export default function InputModeSelector({
     <div
       className={`input-mode-selector input-mode-selector--${variant}`}
       role="group"
-      aria-label="Interaction method"
+      aria-label={t("Interaction method")}
     >
-      <span className="input-mode-label">Control</span>
+      <span className="input-mode-label">{t("Control")}</span>
       <div className="input-mode-toggle">
       <button
         type="button"
         onClick={activateMouse}
         aria-pressed={inputMode === "mouse"}
-        aria-label="Use mouse controls"
+        aria-label={t("Use mouse controls")}
         data-hand-target
         data-hand-style="box"
       >
-        <span aria-hidden="true">↖</span> Mouse
-      </button>
+        <span aria-hidden="true">↖</span>{t("Mouse ")}</button>
 
       <button
         type="button"
         onClick={activateHands}
         aria-pressed={inputMode === "hands"}
-        aria-label="Use hand tracking controls"
+        aria-label={t("Use hand tracking controls")}
         data-hand-target
         data-hand-style="box"
       >
-        <span aria-hidden="true">◇</span> Hands
-      </button>
+        <span aria-hidden="true">◇</span>{t("Hands ")}</button>
       </div>
     </div>
   );
