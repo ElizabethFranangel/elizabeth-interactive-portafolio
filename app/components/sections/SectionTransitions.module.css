@@ -1,9 +1,9 @@
 .section[data-section-transition] {
   min-height: auto;
-  padding-block: clamp(72px, 7.5vw, 108px);
+  padding-block: clamp(28px, 3vw, 44px);
   background: var(--background);
-  border-top: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-  transition: background-color 500ms ease, border-color 500ms ease;
+  border-top: 0;
+  transition: background-color 500ms ease;
 }
 
 .section[data-section-tone="alternate"] {
@@ -23,7 +23,7 @@
 
 @media (max-width: 800px) {
   .section[data-section-transition] {
-    padding-block: 68px;
+    padding-block: 24px;
   }
 }
 
