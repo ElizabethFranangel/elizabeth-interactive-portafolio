@@ -1,5 +1,4 @@
-.switch { display: inline-flex; align-items: center; flex-shrink: 0; gap: 2px; padding: 3px; height: 40px; border: 1px solid var(--home-line); border-radius: 999px; background: var(--home-surface); }
-.switch button { width: 30px; height: 30px; padding: 0; border: 1px solid transparent; border-radius: 50%; background: transparent; color: var(--home-muted); font: 600 10px/1 var(--font-body), sans-serif; cursor: pointer; }
-.switch button[aria-pressed="true"] { background: var(--sky-glass); color: var(--very-navy); border-color: var(--home-line); }
-.switch button:focus-visible { outline: 2px solid var(--accent, #b69786); outline-offset: 2px; }
-@media (max-width: 620px) { .switch { height: 36px; padding: 2px; gap: 0; } .switch button { width: 27px; height: 28px; } }
+.switch { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; min-width:42px; height:40px; padding:9px 12px; border:1px solid var(--home-line); border-radius:24px; background:transparent; color:var(--home-text); font:500 12px/1 var(--font-body),sans-serif; letter-spacing:.04em; cursor:pointer; transition:border-color 180ms ease,background-color 180ms ease; }
+.switch:hover { border-color:var(--accent, #b69786); }
+.switch:focus-visible { outline:2px solid var(--accent, #b69786); outline-offset:3px; }
+@media(max-width:620px) { .switch { min-width:36px; height:36px; padding:8px; } }
