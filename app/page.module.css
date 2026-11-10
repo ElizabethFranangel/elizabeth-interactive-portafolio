@@ -4359,3 +4359,28 @@
   .homeLower { margin-top: 24px; padding-top: 0; }
   .previewCard { min-height: clamp(180px, 23vh, 218px); }
 }
+
+/* Reserve room for tab outlines and halos without vertical scrolling. */
+.publicationOverview, .projectOverview {
+  overflow-y: hidden;
+  padding: 12px 6px;
+  margin-inline: -6px;
+}
+
+/* Scroll moves the subsection cards gently; their content stays visible. */
+.publicationOverview > button, .projectOverview > button {
+  translate: 0 var(--subsection-scroll-offset, 0px);
+  transition: border-color 250ms ease, background-color 250ms ease, translate 120ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .publicationOverview > button, .projectOverview > button { translate: none; transition: none; }
+}
+
+/* Soft green keyword pills, shared across the portfolio. */
+.page { --keyword-bg: #e8efea; --keyword-text: #315d64; --keyword-border: rgba(65,118,110,.14); }
+.page[data-theme="dark"] { --keyword-bg: rgba(143,186,174,.18); --keyword-text: #c9ded6; --keyword-border: rgba(143,186,174,.28); }
+.keywordRow span, .publicationRecord li, .projectTopics li, .workflowBenchmarks li {
+  background: var(--keyword-bg);
+  color: var(--keyword-text);
+  border-color: var(--keyword-border);
+}

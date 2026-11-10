@@ -21,7 +21,7 @@ export function CertificateProvider({ children }: { children: ReactNode }) {
 
   const cancel = useCallback(() => { if (timer.current) clearTimeout(timer.current); timer.current = null; }, []);
   const hide = useCallback(() => { cancel(); setPreview(null); }, [cancel]);
-  const leave = useCallback(() => { cancel(); timer.current = setTimeout(() => setPreview(null), 160); }, [cancel]);
+  const leave = useCallback(() => { cancel(); timer.current = setTimeout(() => setPreview(null), 400); }, [cancel]);
   const show = useCallback((id: string, target: HTMLElement) => {
     cancel();
     if (isOpen.current || suppressFocus.current || !certificates[id]) return;
@@ -68,15 +68,19 @@ export function CertificateProvider({ children }: { children: ReactNode }) {
 
   return <CertificateContext.Provider value={{ show, leave, open }}>
     {children}
-    {preview && createPortal(<aside className={`${styles.surface} ${styles.preview}`} data-theme={preview.theme} style={{ left: preview.x, top: preview.y }} onPointerEnter={cancel} onPointerLeave={leave} onFocus={cancel} onBlur={leave} aria-label={`Certificate preview: ${preview.certificate.title}`}>
-      {/* Native image sizing keeps the certificate's original proportions. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={basePath + preview.certificate.image} alt={`Certificate: ${preview.certificate.title}`} />
+    {preview && createPortal(<aside className={`${styles.surface} ${styles.preview}`} data-theme={preview.theme} style={{ left: preview.x, top: preview.y }} onPointerEnter={cancel} onPointerDown={cancel} onPointerLeave={leave} onFocus={cancel} onBlur={leave} aria-label={`Certificate preview: ${preview.certificate.title}`}>
+      <button type="button" className={styles.thumbnail} aria-label={`Expand certificate: ${preview.certificate.title}`} aria-haspopup="dialog" onClick={event => open(preview.id, trigger.current || event.currentTarget)} data-hand-target data-hand-style="box">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={basePath + preview.certificate.image} alt={`Certificate: ${preview.certificate.title}`} draggable={false} />
+      </button>
       <p>{preview.certificate.institution} · {preview.certificate.year}</p>
-      <button type="button" onClick={event => open(preview.id, trigger.current || event.currentTarget)} data-hand-target data-hand-style="box">View certificate ↗</button>
     </aside>, document.body)}
-    {selected && createPortal(<dialog ref={dialog} className={`${styles.surface} ${styles.dialog}`} data-theme={selected.theme} aria-labelledby="certificate-dialog-title" onClose={close}>
-      <header><span>{selected.certificate.category} · {selected.certificate.year}</span><button type="button" autoFocus onClick={() => dialog.current?.close()} aria-label="Close certificate">Close ×</button></header>
+    {selected && createPortal(<dialog ref={dialog} className={`${styles.surface} ${styles.dialog}`} data-theme={selected.theme} aria-labelledby="certificate-dialog-title" tabIndex={-1} autoFocus onClose={close} onClick={event => {
+      if (event.target !== event.currentTarget) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();
+    }}>
+      <header><span>{selected.certificate.category} · {selected.certificate.year}</span></header>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={basePath + selected.certificate.image} alt={`Original certificate: ${selected.certificate.title}`} />
       <h2 id="certificate-dialog-title">{selected.certificate.title}</h2>

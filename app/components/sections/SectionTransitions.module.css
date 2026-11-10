@@ -20,8 +20,8 @@
 }
 
 .section[data-reveal="waiting"] > .content {
-  opacity: 0;
-  transform: translateY(18px);
+  opacity: 1;
+  transform: none;
 }
 
 @media (max-width: 1100px) {

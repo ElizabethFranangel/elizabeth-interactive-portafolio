@@ -8,6 +8,8 @@ import ResearchAreasGallery from "./ResearchAreasGallery";
 import { CertificateTitle } from "../content/CertificatePreview";
 import { usePortfolioContent } from "../content/ContentProvider";
 
+const entryNumber = (prefix: string, index: number) => `${prefix}${String(index + 1).padStart(2, "0")}`;
+
 type PortfolioChaptersProps = {
   onNavigate: (section: number) => void;
 };
@@ -54,6 +56,32 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
       observer.disconnect();
       reducedMotion.removeEventListener("change", configure);
       sections.forEach((section) => { delete section.dataset.reveal; });
+    };
+  }, []);
+
+  useEffect(() => {
+    const sections = [...document.querySelectorAll<HTMLElement>("[data-section-transition]")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    const update = () => {
+      sections.forEach(section => {
+        const header = parseFloat(getComputedStyle(section).getPropertyValue("--section-header-height")) || 82;
+        const progress = (section.getBoundingClientRect().top - header) / Math.max(1, innerHeight - header);
+        const offset = reducedMotion.matches ? 0 : Math.min(1, Math.max(0, progress)) * 6;
+        section.style.setProperty("--subsection-scroll-offset", offset.toFixed(2) + "px");
+      });
+    };
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    reducedMotion.addEventListener("change", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      reducedMotion.removeEventListener("change", schedule);
+      sections.forEach(section => section.style.removeProperty("--subsection-scroll-offset"));
     };
   }, []);
 
@@ -171,10 +199,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
           </section>}
 
           {activeResearchTab === 2 && <section><p className={styles.microLabel}>Certifications &amp; diplomas</p><ul className={styles.academicDevelopmentList}>
-            {academicDevelopment.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
+            {academicDevelopment.map((item, index) => <li key={item.id}><span>{entryNumber("AD", index)}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           {activeResearchTab === 3 && <section><p className={styles.microLabel}>Additional training · Entrepreneurship</p><ul className={styles.academicDevelopmentList}>
-            {additionalTraining.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
+            {additionalTraining.map((item, index) => <li key={item.id}><span>{entryNumber("AT", index)}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           </div>
           </ViewportPager>}
@@ -209,7 +237,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                 <article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>02</strong><time>2023</time><span>Scientific Outreach Talk</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="OUT02">A walk through the paths of Artificial Intelligence</CertificateTitle></h3><p className={styles.publicationAuthors}>Introductory scientific outreach on artificial intelligence for student audiences.</p><ul className={styles.publicationTags}><li>Verified activity</li></ul></div></article>
               </div></section>}
               {activeTeachingTab === 2 && <section><p className={styles.microLabel}>Participation &amp; academic service</p><div className={styles.publicationArchive}>
-                {academicService.map((item) => <article key={item.id} className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{item.id}</strong><time>{item.year}</time><span>{item.type}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p className={styles.publicationAuthors}>{item.description}</p><p className={styles.publicationJournal}>{item.institution}</p><p className={styles.publicationMeta}>{item.date}</p></div></article>)}
+                {academicService.map((item, index) => <article key={item.id} className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{entryNumber("AS", index)}</strong><time>{item.year}</time><span>{item.type}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p className={styles.publicationAuthors}>{item.description}</p><p className={styles.publicationJournal}>{item.institution}</p><p className={styles.publicationMeta}>{item.date}</p></div></article>)}
               </div></section>}
             </div>
             </ViewportPager>
@@ -256,9 +284,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             <section className={styles.peerReviewed} aria-labelledby="peer-reviewed-title">
               <p className={styles.microLabel} id="peer-reviewed-title">Journal Article</p>
               <div className={styles.publicationArchive}>
-                {publications.map((publication) => (
+                {publications.map((publication, index) => (
                   <article key={publication.id} className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>{publication.id}</strong><time>{publication.year}</time><span>Featured publication</span></div>
+                    <div className={styles.publicationIndex}><strong>{entryNumber("J", index)}</strong><time>{publication.year}</time><span>Featured publication</span></div>
                     <div className={styles.publicationRecord}>
                       <h3>{publication.title}</h3>
                       <p className={styles.publicationAuthors} aria-label={`Authors: ${publication.authors.map((author) => author.name).join(", ")}`}>
@@ -340,9 +368,9 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             <section className={styles.presentationsSection} aria-labelledby="presentations-title">
               <p className={styles.microLabel} id="presentations-title">Scientific presentations</p>
               <div className={styles.publicationArchive}>
-                {scientificPresentations.map((presentation) => (
+                {scientificPresentations.map((presentation, index) => (
                   <article key={presentation.id} className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>{presentation.id}</strong><time>{presentation.year}</time><span>{presentation.type}</span></div>
+                    <div className={styles.publicationIndex}><strong>{entryNumber("P", index)}</strong><time>{presentation.year}</time><span>{presentation.type}</span></div>
                     <div className={styles.publicationRecord}>
                       <h3><CertificateTitle id={presentation.id}>{presentation.title}</CertificateTitle></h3>
                       <p className={styles.publicationJournal}>{presentation.event}</p>
@@ -392,10 +420,10 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
           <ViewportPager key={activeProjectTab}>
           <section key={activeProjectTab} className={styles.selectedProjects} id={`project-panel-${activeProjectTab}`} role="tabpanel" aria-labelledby="selected-projects-title">
             <p className={styles.microLabel} id="selected-projects-title">{activeProjectTab === 0 ? "Research & Algorithms" : "Software & Systems"}</p>
-            {activeProjectTab === 0 && projects.map((project) => (
+            {activeProjectTab === 0 && projects.map((project, index) => (
               <article key={project.id} className={styles.projectEntry}>
                 <aside className={styles.projectIdentity}>
-                  <strong>{project.id}</strong><span>{project.type}</span><em>{project.status}</em>
+                  <strong>{entryNumber("P", index)}</strong><span>{project.type}</span><em>{project.status}</em>
                 </aside>
                 <div className={styles.projectBody}>
                   <div className={styles.projectHeading}>
