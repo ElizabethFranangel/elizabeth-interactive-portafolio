@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "../../page.module.css";
 import transitions from "./SectionTransitions.module.css";
+import ViewportPager from "./ViewportPager";
 import { CertificateTitle } from "../content/CertificatePreview";
 import { usePortfolioContent } from "../content/ContentProvider";
 
@@ -55,6 +56,13 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
     };
   }, []);
 
+  const researchTabs = [
+    { label: "Research journey", count: 2 },
+    { label: "Research areas", count: 8 },
+    { label: "Academic development", count: academicDevelopment.length },
+    { label: "Additional training", count: additionalTraining.length },
+  ];
+
   const publicationTabs = [
     { label: "Journal Article", count: publications.filter((publication) => publication.type === "journal").length },
     { label: "Book Chapters", count: 1 },
@@ -62,30 +70,6 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
     { label: "Under review", count: 1 },
     { label: "Scientific presentations", count: scientificPresentations.length },
   ] as const;
-
-  const showNextPublicationTab = () => {
-    const nextTab = (activePublicationTab + 1) % publicationTabs.length;
-    setActivePublicationTab(nextTab);
-    publicationNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  };
-
-  const showNextTeachingPage = () => {
-    const nextTab = (activeTeachingTab + 1) % 3;
-    setActiveTeachingTab(nextTab);
-    teachingNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  };
-
-  const showNextResearchPage = () => {
-    const nextTab = (activeResearchTab + 1) % 3;
-    setActiveResearchTab(nextTab);
-    researchNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  };
-
-  const showNextProjectPage = () => {
-    const nextTab = (activeProjectTab + 1) % 2;
-    setActiveProjectTab(nextTab);
-    projectNavigationRef.current?.children[nextTab]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -169,12 +153,12 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
           </header>
 
           <div ref={researchNavigationRef} className={styles.publicationOverview} role="tablist" aria-label="Research subsections">
-            {[{ label: "Research journey", count: 2 }, { label: "Research areas", count: 8 }, { label: "Academic development", count: academicDevelopment.length + additionalTraining.length }].map((tab, index) => (
-              <button key={tab.label} type="button" role="tab" aria-selected={activeResearchTab === index} aria-controls={`research-panel-${index}`} className={activeResearchTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveResearchTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeResearchTab + 2) % 3 ? "" : undefined} data-hand-next={index === (activeResearchTab + 1) % 3 ? "" : undefined} data-hand-target data-hand-style="box"><strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span></button>
+            {researchTabs.map((tab, index) => (
+              <button key={tab.label} type="button" role="tab" aria-selected={activeResearchTab === index} aria-controls={`research-panel-${index}`} className={activeResearchTab === index ? styles.activePublicationTab : undefined} onClick={(event) => { setActiveResearchTab(index); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }} data-hand-prev={index === (activeResearchTab + researchTabs.length - 1) % researchTabs.length ? "" : undefined} data-hand-next={index === (activeResearchTab + 1) % researchTabs.length ? "" : undefined} data-hand-target data-hand-style="box"><strong>{String(tab.count).padStart(2, "0")}</strong><span>{tab.label}</span></button>
             ))}
           </div>
 
-          <div className={styles.researchTabBody}>
+          <ViewportPager key={activeResearchTab}>
           <div key={activeResearchTab} className={styles.researchTabPanel} id={`research-panel-${activeResearchTab}`} role="tabpanel">
           {activeResearchTab === 0 && <section className={styles.researchJourney} aria-labelledby="research-journey-title">
             <p className={styles.microLabel} id="research-journey-title">Research journey</p>
@@ -206,12 +190,12 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
           {activeResearchTab === 2 && <section><p className={styles.microLabel}>Certifications &amp; diplomas</p><ul className={styles.academicDevelopmentList}>
             {academicDevelopment.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
-          </ul><p className={styles.microLabel}>Additional training · Entrepreneurship</p><ul className={styles.academicDevelopmentList}>
+          </ul></section>}
+          {activeResearchTab === 3 && <section><p className={styles.microLabel}>Additional training · Entrepreneurship</p><ul className={styles.academicDevelopmentList}>
             {additionalTraining.map((item) => <li key={item.id}><span>{item.id}</span><div><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p>{item.institution} · {item.date}</p></div><time>{item.year}</time></li>)}
           </ul></section>}
           </div>
-          <button className={styles.publicationBodyNext} type="button" onClick={showNextResearchPage} aria-label="Show next research subsection" data-hand-target data-hand-next data-hand-style="icon">›</button>
-          </div>
+          </ViewportPager>
         </div>
       </section>
 
@@ -234,7 +218,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             ))}
           </div>
 
-          <div className={styles.teachingBody}>
+          <ViewportPager key={activeTeachingTab}>
             <div key={activeTeachingTab} className={styles.teachingPanel} id={`teaching-panel-${activeTeachingTab}`} role="tabpanel">
               {activeTeachingTab === 0 && <section><p className={styles.microLabel}>Teaching experience</p><article className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>TE01</strong><time>2022</time><span>Adjunct Academic Support</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id="TE01">Analysis and Design of Algorithms</CertificateTitle></h3><p className={styles.publicationAuthors}>Academic support within the Computer Systems Engineering program.</p><p className={styles.publicationJournal}>Tecnológico Nacional de México · Instituto Tecnológico de Ciudad Madero</p><p className={styles.publicationMeta}>Aug — Dec 2022</p><ul className={styles.publicationTags}><li>Algorithms</li><li>Computer Science</li><li>2022</li></ul></div></article></section>}
 
@@ -246,8 +230,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                 {academicService.map((item) => <article key={item.id} className={styles.publicationEntry}><div className={styles.publicationIndex}><strong>{item.id}</strong><time>{item.year}</time><span>{item.type}</span></div><div className={styles.publicationRecord}><h3><CertificateTitle id={item.id}>{item.title}</CertificateTitle></h3><p className={styles.publicationAuthors}>{item.description}</p><p className={styles.publicationJournal}>{item.institution}</p><p className={styles.publicationMeta}>{item.date}</p></div></article>)}
               </div></section>}
             </div>
-            <button className={styles.publicationBodyNext} type="button" onClick={showNextTeachingPage} aria-label="Show next teaching subsection" data-hand-target data-hand-next data-hand-style="icon">›</button>
-          </div>
+            </ViewportPager>
         </div>
       </section>
 
@@ -285,7 +268,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             </div>
           </div>
 
-          <div className={styles.publicationBody}>
+          <ViewportPager key={activePublicationTab}>
           <div key={activePublicationTab} className={styles.publicationsEditorial} id={`publication-panel-${activePublicationTab}`} role="tabpanel" aria-labelledby={`publication-tab-${activePublicationTab}`}>
             {activePublicationTab === 0 && (
             <section className={styles.peerReviewed} aria-labelledby="peer-reviewed-title">
@@ -390,8 +373,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             </section>
             )}
           </div>
-          <button className={styles.publicationBodyNext} type="button" onClick={showNextPublicationTab} aria-label="Show next publication category" data-hand-target data-hand-next data-hand-style="icon">›</button>
-          </div>
+          </ViewportPager>
         </div>
       </section>
 
@@ -425,7 +407,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             ))}
           </div>
 
-          <div className={styles.projectArchiveBody}>
+          <ViewportPager key={activeProjectTab}>
           <section key={activeProjectTab} className={styles.selectedProjects} id={`project-panel-${activeProjectTab}`} role="tabpanel" aria-labelledby="selected-projects-title">
             <p className={styles.microLabel} id="selected-projects-title">{activeProjectTab === 0 ? "Research & Algorithms" : "Software & Systems"}</p>
             {activeProjectTab === 0 && projects.map((project) => (
@@ -502,8 +484,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
               </article>
             </>}
           </section>
-          <button className={styles.projectBodyNext} type="button" onClick={showNextProjectPage} aria-label="Show next project subsection" data-hand-target data-hand-next data-hand-style="icon">›</button>
-          </div>
+          </ViewportPager>
         </div>
       </section>
 

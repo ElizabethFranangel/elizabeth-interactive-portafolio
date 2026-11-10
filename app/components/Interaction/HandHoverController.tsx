@@ -92,6 +92,14 @@ export default function HandHoverController() {
           const rect =
             element.getBoundingClientRect();
 
+          const pageViewport = element.closest<HTMLElement>("[data-page-viewport]");
+          if (pageViewport) {
+            const visible = pageViewport.getBoundingClientRect();
+            if (rect.right <= visible.left || rect.left >= visible.right || rect.bottom <= visible.top || rect.top >= visible.bottom) {
+              continue;
+            }
+          }
+
           if (
             rect.bottom < 0 ||
             rect.top > window.innerHeight ||
