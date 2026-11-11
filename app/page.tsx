@@ -1,5 +1,6 @@
 "use client";
 import SocialIcon from "./components/SocialIcon";
+import { profileStructuredData } from "./lib/site";
 
 import { useLanguage, LanguageProvider } from "./components/content/LanguageProvider";
 import LanguageSwitch from "./components/content/LanguageSwitch";
@@ -230,6 +231,7 @@ function PortfolioContent() {
 
   return (
     <main className={styles.page} data-theme={theme}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileStructuredData).replace(/</g, "\\u003c") }} />
 
       {/* ===================================================
           INTERACCIÓN
