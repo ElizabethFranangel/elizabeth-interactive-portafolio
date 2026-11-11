@@ -2,12 +2,13 @@
 
 import { useLanguage } from "../content/LanguageProvider";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../../page.module.css";
 import transitions from "./SectionTransitions.module.css";
 import ViewportPager from "./ViewportPager";
 import ResearchAreasGallery from "./ResearchAreasGallery";
 import ProjectEvidenceGallery from "./ProjectEvidenceGallery";
+import ContactSection from "./ContactSection";
 import { CertificateTitle } from "../content/CertificatePreview";
 import { usePortfolioContent } from "../content/ContentProvider";
 
@@ -20,7 +21,6 @@ type PortfolioChaptersProps = {
 export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps) {
   const { t } = useLanguage();
   const { profile, publications, scientificPresentations, academicDevelopment, academicService, additionalTraining, researchNodes, researchPipeline, optimizationFamilies, workflowBenchmarks, projects, teachingInterests, academicActivities, teachingAreas } = usePortfolioContent();
-  const [formStatus, setFormStatus] = useState("");
   const [activeResearchTab, setActiveResearchTab] = useState(0);
   const [activeTeachingTab, setActiveTeachingTab] = useState(0);
   const [activePublicationTab, setActivePublicationTab] = useState(0);
@@ -103,13 +103,6 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
     { label: "Under review", count: 1 },
     { label: "Scientific presentations", count: scientificPresentations.length },
   ] as const;
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setFormStatus(
-      "The contact form is ready for a verified delivery service. For now, please connect with me on LinkedIn."
-    );
-  };
 
   return (
     <>
@@ -501,37 +494,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
         </div>
       </section>
 
-      <section id="contact" data-section-transition data-section-tone="alternate" className={`${styles.chapter} ${styles.contactChapter} ${transitions.section}`}>
-        <span className={styles.chapterNumber} aria-hidden="true">06</span>
-        <div className={`${styles.chapterInner} ${transitions.content}`}>
-          <div className={styles.contactEditorial}>
-            <div>
-              <p className={styles.sectionEyebrow}>{t("06 / Contact")}</p>
-              <h2 className={styles.sectionTitle}>{t("Let's ")}<span>{t("connect.")}</span></h2>
-              <p className={styles.chapterIntro}>{profile.contact}</p>
-              <div className={styles.contactLinks}>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" data-hand-target>{t("LinkedIn ")}<span>↗</span></a>
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" data-hand-target>{t("GitHub ")}<span>↗</span></a>
-              </div>
-            </div>
-
-            <form className={styles.contactForm} onSubmit={handleSubmit}>
-              <label>{t("Name")}<input name="name" autoComplete="name" required /></label>
-              <label>{t("Email")}<input name="email" type="email" autoComplete="email" required /></label>
-              <label>{t("Subject")}<input name="subject" required /></label>
-              <label>{t("Message")}<textarea name="message" rows={4} required /></label>
-              <button type="submit" data-hand-target data-hand-style="box">{t("Send message ")}<span>→</span></button>
-              <p className={styles.formStatus} role="status" aria-live="polite">{t(formStatus)}</p>
-            </form>
-          </div>
-        </div>
-        <footer className={styles.footer}>
-          <span>{t("Elizabeth del Ángel Franco")}</span>
-          <span>{t("© 2026 · Computer Science Researcher")}</span>
-          <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/`} data-hand-target>{t("Administrar · Iniciar sesión")}</a>
-          <button type="button" onClick={() => onNavigate(0)} data-hand-target>{t("Back to top ↑")}</button>
-        </footer>
-      </section>
+      <ContactSection onNavigate={onNavigate} />
     </>
   );
 }

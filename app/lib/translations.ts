@@ -1,6 +1,15 @@
 export type Language = "es" | "en";
 
 const spanish: Record<string, string> = {
+  "Professional profile and collaboration": "Perfil profesional y colaboración",
+  "Code, projects and development": "Código, proyectos y desarrollos",
+  "Direct contact": "Contacto directo", "Availability": "Disponibilidad",
+  "Open to academic collaborations and technology projects.": "Abierta a colaboraciones académicas y proyectos tecnológicos.",
+  "Your name": "Tu nombre", "you@example.com": "tu.correo@ejemplo.com",
+  "Select a subject": "Selecciona un asunto", "Write your message...": "Escribe tu mensaje...",
+  "Academic collaboration": "Colaboración académica", "University teaching": "Docencia universitaria",
+  "Technology project": "Proyecto tecnológico", "Other inquiry": "Otra consulta",
+  "Your message will be processed by FormSubmit and sent to eliizabeth.franco@gmail.com. Sending opens its verification and confirmation page.": "FormSubmit procesará tu mensaje y lo enviará a eliizabeth.franco@gmail.com. Al enviar se abrirá su página de verificación y confirmación.",
   "System sign-in": "Acceso al sistema", "Sign-in screen for the gym management system.": "Pantalla de acceso al sistema de gestión del gimnasio.",
   "Gym dashboard": "Resumen del gimnasio", "Overview of active clients and membership status.": "Vista general de clientes activos y estado de las membresías.",
   "Client directory": "Directorio de clientes", "Client records with search and registration controls.": "Listado de clientes con búsqueda y registro.",
