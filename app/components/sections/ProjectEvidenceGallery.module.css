@@ -1,6 +1,6 @@
 .gallery { min-width:0; break-inside:avoid-column; }
 .eyebrow { margin:0 0 14px; color:var(--accent); font-size:10px; letter-spacing:.13em; text-transform:uppercase; }
-.accordion { display:flex; height:clamp(230px,25vw,315px); gap:7px; padding:4px; margin-inline:-4px; }
+.accordion { display:flex; height:clamp(230px,25vw,315px); gap:7px; padding:4px; }
 .panel { position:relative; flex:1 1 0; min-width:32px; padding:0; overflow:hidden; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:#f6f5f0; cursor:zoom-in; transition:flex-grow 550ms cubic-bezier(.22,1,.36,1),border-color 250ms ease; isolation:isolate; }
 .panel[data-active="true"] { flex-grow:7; border-color:var(--accent); }
 .gallery .panel img { display:block; width:100%; height:100%; max-height:none; object-fit:cover; border:0; border-radius:0; filter:saturate(.5); transition:filter 450ms ease; }
