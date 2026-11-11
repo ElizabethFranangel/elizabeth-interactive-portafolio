@@ -412,10 +412,11 @@ function PortfolioContent() {
 
               <a
                 className={styles.primaryButton}
-                href="#cv"
+                href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/documents/CVU_Elizabeth_del_Angel_Franco.pdf`}
+                download="CVU_Elizabeth_del_Angel_Franco.pdf"
                 data-hand-target
                 data-hand-style="box"
-              >{t("Download CV ")}<span aria-hidden="true">↓</span>
+              >{t("Download CVU ")}<span aria-hidden="true">↓</span>
               </a>
 
             </div>

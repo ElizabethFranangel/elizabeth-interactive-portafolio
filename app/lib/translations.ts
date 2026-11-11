@@ -1,6 +1,7 @@
 export type Language = "es" | "en";
 
 const spanish: Record<string, string> = {
+  "Download CVU": "Descargar CVU",
   "Professional profile and collaboration": "Perfil profesional y colaboración",
   "Code, projects and development": "Código, proyectos y desarrollos",
   "Direct contact": "Contacto directo", "Availability": "Disponibilidad",
