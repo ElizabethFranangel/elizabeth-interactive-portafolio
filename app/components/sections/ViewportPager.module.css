@@ -8,6 +8,7 @@
 .flow :global(h3),.flow :global(figure) { break-inside:avoid-column; }
 .flow :global(p) { orphans:2; widows:2; }
 .flow [data-pager-split="true"] { display:block !important; break-inside:auto; }
+.flow [data-pager-tight="true"] { padding-block:20px !important; }
 .flow :global(img) { max-height:100%; object-fit:contain; }
 .next { grid-column:3; grid-row:1; align-self:stretch; margin-top:30px; width:38px; min-height:100px; border:1px solid var(--accent); border-radius:8px; background:color-mix(in srgb,var(--surface) 84%,transparent); color:var(--text-primary); font:400 25px/1 Georgia,serif; cursor:pointer; }
 .previous { grid-column:1; }

@@ -50,15 +50,25 @@ export default function ViewportPager({ children }: { children: ReactNode }) {
     const region = viewport.current;
     const content = flow.current;
     if (!region || !content || !size.width) return;
+    region.scrollLeft = 0;
     // Keep short entries together. Let oversized grids and articles continue
     // across columns rather than clipping content below the screen.
     content.querySelectorAll<HTMLElement>("[data-pager-split]").forEach(element => delete element.dataset.pagerSplit);
+    content.querySelectorAll<HTMLElement>("[data-pager-tight]").forEach(element => delete element.dataset.pagerTight);
     content.querySelectorAll<HTMLElement>("article, div, aside, dl").forEach(element => {
       const display = getComputedStyle(element).display;
       if (element.scrollHeight > size.height && (element.tagName === "ARTICLE" || display.includes("grid"))) {
         element.dataset.pagerSplit = "true";
       }
     });
+    // An unbroken grid may fit a whole column but not the space below its
+    // heading. Keep the first record on page one instead of leaving it empty.
+    const firstRecord = content.querySelector<HTMLElement>("article");
+    const startsOnLaterPage = () => firstRecord && firstRecord.getBoundingClientRect().left >= region.getBoundingClientRect().right - 1;
+    if (startsOnLaterPage() && firstRecord) {
+      firstRecord.dataset.pagerTight = "true";
+      if (startsOnLaterPage()) firstRecord.dataset.pagerSplit = "true";
+    }
     const pages = Math.max(1, Math.ceil((region.scrollWidth + columnGap - 1) / (size.width + columnGap)));
     setPageCount(pages);
     pendingPage.current = null;

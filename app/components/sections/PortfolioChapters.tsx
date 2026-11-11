@@ -7,6 +7,7 @@ import styles from "../../page.module.css";
 import transitions from "./SectionTransitions.module.css";
 import ViewportPager from "./ViewportPager";
 import ResearchAreasGallery from "./ResearchAreasGallery";
+import ProjectEvidenceGallery from "./ProjectEvidenceGallery";
 import { CertificateTitle } from "../content/CertificatePreview";
 import { usePortfolioContent } from "../content/ContentProvider";
 
@@ -479,7 +480,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   <p>{t("El proyecto integra una arquitectura basada en componentes reutilizables, modos claro y oscuro, diseño adaptable a diferentes resoluciones y elementos gráficos interactivos orientados a mantener una identidad visual académica y tecnológica.")}</p>
                   <div className={styles.projectTopics}><span>{t("Key features")}</span><ul>{["Responsive interface", "Gesture-based interaction", "Mouse navigation", "Light / dark mode", "Interactive visual components", "Modular content sections"].map((feature) => <li key={t(feature)}>{t(feature)}</li>)}</ul></div>
                 </div>
-                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>{t("Project evidence")}</p><figure><img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/interactive-academic-portfolio-evidence.png`} alt={t("Home screen of the Interactive Academic Portfolio")} /><figcaption>{t("Interactive Academic Portfolio · Home interface")}</figcaption></figure></aside>
+                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><ProjectEvidenceGallery /></aside>
               </article>
 
               <article className={`${styles.projectEntry} ${styles.softwareProjectEntry}`}>
@@ -492,7 +493,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
                   <p>{t("Desarrollado bajo una arquitectura de aplicación de escritorio utilizando JavaFX y PostgreSQL, con posibilidad de incorporar nuevos módulos conforme evolucionen las necesidades operativas del gimnasio.")}</p>
                   <div className={styles.projectTopics}><span>{t("Key features")}</span><ul>{["Client management", "Membership tracking", "Payment records", "Expiration control", "Point of sale", "Product management", "Administrative queries"].map((feature) => <li key={t(feature)}>{t(feature)}</li>)}</ul></div>
                 </div>
-                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><p className={styles.microLabel}>{t("Project evidence")}</p><div className={styles.evidencePending}><span>{t("Image forthcoming")}</span><small>{t("Gym Management & Point-of-Sale System")}</small></div></aside>
+                <aside className={`${styles.projectTechnical} ${styles.projectEvidence}`}><ProjectEvidenceGallery project="gym" /></aside>
               </article>
             </>}
           </section>
