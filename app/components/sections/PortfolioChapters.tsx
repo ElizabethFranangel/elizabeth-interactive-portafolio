@@ -98,8 +98,6 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
 
   const publicationTabs = [
     { label: "Journal Article", count: publications.filter((publication) => publication.type === "journal").length },
-    { label: "Book Chapters", count: 1 },
-    { label: "Books", count: 1 },
     { label: "Under review", count: 1 },
     { label: "Scientific presentations", count: scientificPresentations.length },
   ] as const;
@@ -306,42 +304,6 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
             )}
 
             {activePublicationTab === 1 && (
-            <section className={styles.peerReviewed}>
-              <p className={styles.microLabel}>{t("Book Chapters")}</p>
-              <div className={styles.publicationArchive}>
-                <article className={styles.publicationEntry}>
-                  <div className={styles.publicationIndex}><strong>{t("BC01")}</strong><time>—</time><span>{t("Book chapter")}</span></div>
-                  <div className={styles.publicationRecord}>
-                    <h3>{t("Book chapter details forthcoming")}</h3>
-                    <p className={styles.publicationAuthors}>{t("Author information will be added.")}</p>
-                    <p className={styles.publicationJournal}>{t("Book and publisher information forthcoming")}</p>
-                    <p className={styles.publicationMeta}>{t("Publication metadata will be added when available.")}</p>
-                    <ul><li>{t("Book Chapter")}</li></ul>
-                  </div>
-                </article>
-              </div>
-            </section>
-            )}
-
-            {activePublicationTab === 2 && (
-              <section className={styles.peerReviewed}>
-                <p className={styles.microLabel}>{t("Books")}</p>
-                <div className={styles.publicationArchive}>
-                  <article className={styles.publicationEntry}>
-                    <div className={styles.publicationIndex}><strong>B01</strong><time>—</time><span>{t("Book")}</span></div>
-                    <div className={styles.publicationRecord}>
-                      <h3>{t("Book details forthcoming")}</h3>
-                      <p className={styles.publicationAuthors}>{t("Author information will be added.")}</p>
-                      <p className={styles.publicationJournal}>{t("Publisher information forthcoming")}</p>
-                      <p className={styles.publicationMeta}>{t("Publication metadata will be added when available.")}</p>
-                      <ul><li>{t("Book")}</li></ul>
-                    </div>
-                  </article>
-                </div>
-              </section>
-            )}
-
-            {activePublicationTab === 3 && (
               <section className={styles.peerReviewed}>
                 <p className={styles.microLabel}>{t("Under review")}</p>
                 <div className={styles.publicationArchive}>
@@ -360,7 +322,7 @@ export default function PortfolioChapters({ onNavigate }: PortfolioChaptersProps
               </section>
             )}
 
-            {activePublicationTab === 4 && (
+            {activePublicationTab === 2 && (
             <section className={styles.presentationsSection} aria-labelledby="presentations-title">
               <p className={styles.microLabel} id="presentations-title">{t("Scientific presentations")}</p>
               <div className={styles.publicationArchive}>
