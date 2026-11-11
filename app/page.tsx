@@ -11,6 +11,7 @@ import OrbScene from "./components/Experience3D/OrbScene";
 
 import InteractionController from "./components/Interaction/InteractionController";
 import SectionNavigator from "./components/Interaction/SectionNavigator";
+import SectionScroll from "./components/Interaction/SectionScroll";
 
 import {
   InteractionProvider,
@@ -161,7 +162,7 @@ function PortfolioContent() {
     programmaticSectionTarget.current = currentSection;
     programmaticScrollUntil.current = Date.now() + 3000;
     document.getElementById(sectionIds[currentSection])?.scrollIntoView({
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
       block: "start",
     });
   }, [currentSection]);
@@ -185,8 +186,9 @@ function PortfolioContent() {
 
         if (targetIndex !== null) {
           const targetSection = document.getElementById(sectionIds[targetIndex]);
+          const targetHeader = targetSection ? parseFloat(getComputedStyle(targetSection).getPropertyValue("--section-header-height")) || 0 : 0;
           const targetReached = targetSection
-            ? Math.abs(targetSection.getBoundingClientRect().top) <= 18
+            ? Math.abs(targetSection.getBoundingClientRect().top - targetHeader) <= 18
             : true;
 
           if (targetReached) {
@@ -242,6 +244,7 @@ function PortfolioContent() {
       <HandCursor />
 
       <SectionNavigator />
+      <SectionScroll />
 
       {currentSection === 0 && (
         <div className={styles.homeControls}>
@@ -434,11 +437,6 @@ function PortfolioContent() {
 
 
           <div className={styles.visual} data-hero-visual>
-            <div className={styles.orbCaption}>
-              <span>{t("SCIENTIFIC NETWORK ")}</span>
-
-              <small>{t("PARTICLES + HAND TRACKING ")}</small>
-            </div>
           </div>
 
           </div>
