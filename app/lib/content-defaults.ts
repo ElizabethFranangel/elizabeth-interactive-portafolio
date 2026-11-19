@@ -60,6 +60,7 @@ const academicService = [
 ];
 
 const additionalTraining = [
+  { id: "AT02", year: "2026", title: "Taller de capacitación: Caso de éxito: Bommus de México", institution: "Consejo Tamaulipeco de Ciencia y Tecnología (COTACYT) · Programa de Incubación de Empresas de Base Tecnológica · Convocatoria 2026", date: "13 November 2026 · Ciudad Victoria, Tamaulipas" },
   { id: "AT01", year: "2026", title: "Sociedad Microindustrial, Sociedad de Acciones Simplificada (SAS) y Régimen Simplificado de Confianza para Personas Morales (RESICO)", institution: "Programa de Incubación de Empresas de Base Tecnológica · Convocatoria 2026", date: "18 September 2026 · Ciudad Victoria, Tamaulipas" },
 ];
 

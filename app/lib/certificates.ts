@@ -1,6 +1,16 @@
 export type Certificate = { id: string; title: string; category: string; institution: string; date: string; iso: string; year: number; image: string };
 
 export const certificates: Record<string, Certificate> = {
+  "AT02": {
+    "id": "C19",
+    "title": "Taller de capacitación: Caso de éxito: Bommus de México",
+    "category": "Formación adicional",
+    "institution": "COTACYT · Programa de Incubación de Empresas de Base Tecnológica · Convocatoria 2026",
+    "date": "13 noviembre 2026 · Ciudad Victoria, Tamaulipas",
+    "iso": "2026-11-13",
+    "year": 2026,
+    "image": "/certificates/c19.jpg"
+  },
   "TE01": {
     "id": "C01",
     "title": "Profesor adjunto · Análisis y Diseño de Algoritmos",

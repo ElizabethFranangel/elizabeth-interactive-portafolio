@@ -47,7 +47,7 @@ test('older saved portfolios gain the new collections without losing edits', asy
   assert.equal(loaded.content.profile.bio, 'Previously saved biography');
   assert.equal(loaded.content.academicDevelopment.length, 4);
   assert.equal(loaded.content.academicService.length, 2);
-  assert.equal(loaded.content.additionalTraining.length, 1);
+  assert.equal(loaded.content.additionalTraining.length, 2);
   assert.equal(loaded.version, 'previous-version');
 });
 test('update requires token and checks previous version', async () => {

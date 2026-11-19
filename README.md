@@ -10,7 +10,7 @@ Las vistas de prueba en `.local-preview/` y `public/wireframes/` son locales y n
 
 El enlace **Administrar · Iniciar sesión** del pie de página abre `/admin/` (incluye automáticamente la ruta del repositorio en GitHub Pages). El panel permite editar perfil, contacto, publicaciones, presentaciones, certificaciones y diplomados, participación y servicio académico, formación adicional, proyectos de investigación y listas de investigación y docencia; también agregar y quitar elementos de esas listas. Los textos editoriales, la cronología académica y los proyectos de software que siguen escritos directamente en los componentes todavía se editan en el código.
 
-Los títulos de los 18 certificados están integrados en Research, Teaching y Scientific presentations. Al pasar el puntero o enfocar un título aparece la imagen; un clic, Enter o un toque abre el visor ampliado. Escape cierra el visor. Se usan los fondos claros del ejemplo y los fondos oscuros originales. Solo se sirven imágenes en public/certificates: no se incluyen PDF ni enlaces de descarga.
+Los títulos de los 19 certificados están integrados en Research, Teaching y Scientific presentations. Al pasar el puntero o enfocar un título aparece la imagen; un clic, Enter o un toque abre el visor ampliado. Escape cierra el visor. Se usan los fondos claros del ejemplo y los fondos oscuros originales. Solo se sirven imágenes en public/certificates: no se incluyen PDF ni enlaces de descarga.
 
 La web conserva su exportación estática. Supabase proporciona autenticación y almacenamiento compartido; los cambios guardados se muestran al abrir o recargar el portafolio sin recompilarlo. Sin configuración, se muestra el contenido original y el panel explica que falta conectar el servicio.
 
