@@ -70,7 +70,7 @@ export default function ResearchAreasGallery() {
       }
       const focused = root.contains(document.activeElement);
       if (interacting || focused) lastAdvance.current = now;
-      if (playing && !interacting && !focused && !matchMedia("(prefers-reduced-motion: reduce)").matches && now - lastAdvance.current >= 3000) {
+      if (playing && !interacting && !focused && !matchMedia("(prefers-reduced-motion: reduce)").matches && now - lastAdvance.current >= 2000) {
         setActive(current => (current + 1) % areas.length);
         lastAdvance.current = now;
       }
