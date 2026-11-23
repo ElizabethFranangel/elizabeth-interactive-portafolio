@@ -26,7 +26,7 @@ export default function ProjectEvidenceGallery({ project = "portfolio" }: { proj
   const headingId = useId();
 
   useEffect(() => {
-    if (project !== "gym" || selected !== null) return;
+    if (selected !== null) return;
     let lastAdvance = performance.now();
     let direction = 0;
     let enteredSide = 0;
@@ -61,7 +61,7 @@ export default function ProjectEvidenceGallery({ project = "portfolio" }: { proj
       }
       const focused = root.contains(document.activeElement);
       if (interacting || focused) lastAdvance = now;
-      if (playing && !interacting && !focused && !matchMedia("(prefers-reduced-motion: reduce)").matches && now - lastAdvance >= 3000) {
+      if (playing && !interacting && !focused && !matchMedia("(prefers-reduced-motion: reduce)").matches && now - lastAdvance >= (project === "portfolio" ? 1500 : 3000)) {
         setActive(current => (current + 1) % evidence.length);
         lastAdvance = now;
       }
@@ -120,9 +120,9 @@ export default function ProjectEvidenceGallery({ project = "portfolio" }: { proj
         <button type="button" aria-label={t("Previous evidence")} onClick={() => move(-1)} data-hand-target data-hand-style="box">‹</button>
         <span aria-hidden="true">{String(active + 1).padStart(2, "0")} / {String(evidence.length).padStart(2, "0")}</span>
         <button type="button" aria-label={t("Next evidence")} onClick={() => move(1)} data-hand-target data-hand-style="box">›</button>
-        {project === "gym" && <button type="button" aria-label={t(playing ? "Pause automatic gallery" : "Play automatic gallery")} aria-pressed={playing} onClick={() => setPlaying(current => !current)} data-hand-target data-hand-style="box">{playing ? "Ⅱ" : "▷"}</button>}
+        <button type="button" aria-label={t(playing ? "Pause automatic gallery" : "Play automatic gallery")} aria-pressed={playing} onClick={() => setPlaying(current => !current)} data-hand-target data-hand-style="box">{playing ? "Ⅱ" : "▷"}</button>
       </div>
-      <p role="status" aria-live={project === "gym" && playing ? "off" : "polite"} aria-atomic="true">{t(evidence[active].description)}</p>
+      <p role="status" aria-live={playing ? "off" : "polite"} aria-atomic="true">{t(evidence[active].description)}</p>
     </div>
     {selected !== null && createPortal(<dialog ref={dialog} className={styles.dialog} data-theme={theme}
       tabIndex={-1} autoFocus aria-labelledby={headingId} onClose={close}
